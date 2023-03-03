@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1081047668868",
+    "project_id": "manajemenaset-87c43",
+    "storage_bucket": "manajemenaset-87c43.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081047668868:android:9bbb7e33009a06234ccad1",
+        "android_client_info": {
+          "package_name": "com.manajemenaset"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081047668868-6e608i40aap70qurbsf0vno8arjq9i9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvb6aKzu1i-bif_ekTqjZC2XoBNyodLfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081047668868-6e608i40aap70qurbsf0vno8arjq9i9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
