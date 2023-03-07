@@ -3,12 +3,12 @@ import {View, Text} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
   Home,
-  TambahKontak,
   Splash,
   Login,
   Registrasi,
   PostData,
   ReadData,
+  Desain,
 } from '../pages';
 import firebase from '@react-native-firebase/app';
 
@@ -47,7 +47,11 @@ const router = () => {
         component={ReadData}
         options={{headerShown: false}} //Buat munculin header
       />
-      {/* <Stack.Screen name="TambahKontak" component={TambahKontak} /> */}
+      <Stack.Screen
+        name="Desain"
+        component={Desain}
+        options={{headerShown: false}} //Buat munculin header
+      />
     </Stack.Navigator>
   );
 };

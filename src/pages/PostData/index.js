@@ -8,6 +8,21 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native';
+import database from '@react-native-firebase/database';
+
+//ID Generator
+function makeid(length) {
+  let result = '';
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
 
 export default function PostData({navigation}) {
   const [namaBarang, setNamaBarang] = useState('');
@@ -16,37 +31,30 @@ export default function PostData({navigation}) {
   const [kondisi, setKondisi] = useState('');
   const [button, setButton] = useState('simpan');
 
-  // const base_url = 'https://demoapi-hilmy.sanbercloud.com/api/news-created';
-  // const token_api =
-  //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvZGVtb2FwaS1oaWxteS5zYW5iZXJjbG91ZC5jb21cL2FwaVwvbG9naW4iLCJpYXQiOjE2NzYzMjk1NzEsImV4cCI6MTczNjMyOTUxMSwibmJmIjoxNjc2MzI5NTcxLCJqdGkiOiJwZHBacUVacTV6ME93amUyIiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.EOuQmqnBXi84NSw82IDZTliRA0lv6b4WgyIA-XhJ6pk';
-
-  const submit = async () => {
-    const data = {
-      namaBarang: namaBarang,
-      jumlahBarang: jumlahBarang,
-      lokasi: lokasi,
-      kondisi: kondisi,
-    };
-    console.log(data);
-    try {
-      const respone = await fetch(base_url, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token_api}`,
-        },
-        body: JSON.stringify(data),
-      });
-      const json = await respone.json();
-      console.log('Data berhasil disimpan', json);
-      setNamaBarang('');
-      setJumlahBarang('');
-      setLokasi('');
-      setKondisi('');
-      Alert.alert('Data berhasil disimpan', json);
-    } catch (error) {
-      console.log(error);
+  //Data ditambahkan
+  const submit = () => {
+    if (
+      namaBarang == '' ||
+      jumlahBarang == '' ||
+      lokasi == '' ||
+      kondisi == ''
+    ) {
+      Alert.alert('Error', 'Form tidak boleh kosong');
+    } else {
+      database()
+        .ref(`/aset/${makeid(6)}`)
+        .set({
+          namaBarang: namaBarang,
+          jumlahBarang: jumlahBarang,
+          lokasi: lokasi,
+          kondisi: kondisi,
+        })
+        .then(() => {
+          Alert.alert('Sukses', 'Data Berhasil Ditambahkan');
+        })
+        .catch(err => {
+          Alert.alert('Error', err.message);
+        });
     }
   };
 
@@ -54,7 +62,9 @@ export default function PostData({navigation}) {
     <>
       <View style={styles.pages}>
         <View style={styles.header}>
-          <Text style={{fontSize: 30, marginBottom: 30}}>Post Data</Text>
+          <Text style={{fontSize: 30, marginBottom: 30, color: 'black'}}>
+            Post Data
+          </Text>
         </View>
 
         <Text style={styles.label}>Nama Barang</Text>
@@ -90,7 +100,7 @@ export default function PostData({navigation}) {
           onChangeText={value => setKondisi(value)}
         />
 
-        <TouchableOpacity style={styles.tombol} title={button} onPress={submit}>
+        <TouchableOpacity style={styles.tombol} onPress={submit}>
           <Text style={styles.textTombol}>Submit</Text>
         </TouchableOpacity>
 
@@ -108,6 +118,7 @@ const styles = StyleSheet.create({
   pages: {
     flex: 1,
     padding: 30,
+    backgroundColor: '#e8ecf4',
   },
   label: {
     fontSize: 16,
@@ -116,15 +127,17 @@ const styles = StyleSheet.create({
   textInput: {
     borderWidth: 1,
     borderColor: 'grey',
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 10,
     marginBottom: 15,
+    backgroundColor: 'white',
   },
   tombol: {
-    backgroundColor: 'black',
+    backgroundColor: '#075eec',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     marginTop: 10,
+    marginBottom: 10,
   },
   textTombol: {
     color: 'white',

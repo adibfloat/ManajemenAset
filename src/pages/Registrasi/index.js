@@ -10,81 +10,27 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 const Registrasi = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  console.log(email);
-
-  // const OnLoginPress = () => {
-  //   if (email == '' || password == '') {
-  //     Alert.alert('Error', 'Form tidak boleh kosong');
-  //   } else {
-  //     auth()
-  //       .signInWithEmailAndPassword(email, password)
-  //       .then(res => {
-  //         navigation.navigate('MyTabs');
-  //       })
-  //       .catch(err => {
-  //         Alert.alert('Error', err.message);
-  //       });
-  //   }
-  // };
-
-  //   return (
-  //     <View style={{flex: 1, backgroundColor: '#dbe4f3'}}>
-  //       <StatusBar backgroundColor={'#dbe4f3'} barStyle="dark-content" />
-  //       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-  //         <Image
-  //           source={require('../../assets/image/ayam.jpg')}
-  //           style={{width: 100, height: 100}}
-  //         />
-  //         <Text style={{fontSize: 18, fontWeight: 'bold'}}>Belajar Login</Text>
-  //         <Text style={{marginTop: 10, fontWeight: 'bold'}}>Login</Text>
-  //       </View>
-  //       <TextInput
-  //         onChangeText={text => {
-  //           setEmail(text);
-  //         }}
-  //         value={email}
-  //         placeholder="email"
-  //         style={{
-  //           backgroundColor: 'white',
-  //           marginHorizontal: 20,
-  //           borderRadius: 15,
-  //         }}
-  //       />
-  //       <TextInput
-  //         onChangeText={text => {
-  //           setPassword(text);
-  //         }}
-  //         value={password}
-  //         secureTextEntry={true}
-  //         placeholder="password"
-  //         style={{
-  //           backgroundColor: 'white',
-  //           marginHorizontal: 20,
-  //           borderRadius: 15,
-  //         }}
-  //       />
-  //       <TouchableOpacity
-  //         style={{
-  //           backgroundColor: 'black',
-  //           marginHorizontal: 50,
-  //           borderRadius: 15,
-  //         }}>
-  //         <Text
-  //           style={{color: 'white', textAlign: 'center'}}
-  //           onPress={() => {
-  //             navigation.replace('Home', {email: email});
-  //           }}>
-  //           Login
-  //         </Text>
-  //       </TouchableOpacity>
-  //     </View>
-  //   );
-  // };
+  //Registrasi
+  const OnRegisterPress = () => {
+    if (email == '' || password == '') {
+      Alert.alert('Error', 'Form tidak boleh kosong');
+    } else {
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          Alert.alert('Berhasil', 'Buat akun berhasil');
+        })
+        .catch(err => {
+          Alert.alert('Error', err.message);
+        });
+    }
+  };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#e8ecf4'}}>
@@ -141,12 +87,13 @@ const Registrasi = ({navigation}) => {
           <View style={styles.formAction}>
             <TouchableOpacity
               title="Submit"
-              // onPress={OnLoginPress}
-              onPress={() => {
-                navigation.replace('Home', {email: email});
-              }}>
+              onPress={OnRegisterPress}
+              // onPress={() => {
+              //   navigation.replace('Home', {email: email});
+              // }}
+            >
               <View style={styles.btn}>
-                <Text style={styles.btnText}>Masuk</Text>
+                <Text style={styles.btnText}>Daftar</Text>
               </View>
             </TouchableOpacity>
           </View>
