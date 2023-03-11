@@ -7,7 +7,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Alert,
+  Button,
 } from 'react-native';
+import DetailData from '../DetailData';
+import EditData from '../EditData';
 import database from '@react-native-firebase/database';
 
 const ReadData = ({navigation}) => {
@@ -24,9 +28,32 @@ const ReadData = ({navigation}) => {
   }, []);
   // console.log(data);
 
+  //Menghapus
+  const hapus = data => {
+    Alert.alert('Info', 'Anda yakin menghapus', [
+      {
+        text: 'Batal',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () =>
+          database()
+            .ref('/aset/' + data)
+            .remove(),
+        style: 'success',
+      },
+    ]);
+  };
+
+  const coba = data => {
+    console.log(data);
+  };
+
   return (
     //Menampilkan data dalam database
-    <ScrollView style={{width: '100%'}}>
+    <ScrollView style={{width: '100%', backgroundColor: '#e8ecf4'}}>
       <View>
         <TouchableOpacity
           style={styles.tombol}
@@ -35,24 +62,43 @@ const ReadData = ({navigation}) => {
         </TouchableOpacity>
 
         <View style={styles.garis} />
+
         {Object.keys(data).map(value => {
           // console.log([value]);
           return (
-            <TouchableOpacity style={styles.container}>
-              <View key={value}>
-                <Text style={styles.nama}>{data[value].namaBarang}</Text>
-                <Text style={styles.lokasi}>{data[value].lokasi}</Text>
+            <View>
+              <View style={styles.container}>
+                <TouchableOpacity
+                  onPress={() => {
+                    /* Menuju Detail Data */
+                    navigation.navigate('DetailData', data[value]);
+                  }}>
+                  <View key={value}>
+                    <Text style={styles.nama}>{data[value].namaBarang}</Text>
+                    <Text style={styles.lokasi}>{data[value].lokasi}</Text>
+                  </View>
+                </TouchableOpacity>
+
+                <View style={styles.icon}>
+                  <TouchableOpacity
+                    // onPress={() => navigation.props('EditData', value)}
+                    // onPress={() => coba(value)}
+                    onPress={() =>
+                      navigation.navigate('EditData', data[value])
+                    }>
+                    <FontAwesomeIcon
+                      style={{marginRight: 15}}
+                      icon={faEdit}
+                      color={'blue'}
+                      size={25}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => hapus(value)}>
+                    <FontAwesomeIcon icon={faTimes} color={'red'} size={25} />
+                  </TouchableOpacity>
+                </View>
               </View>
-              <View style={styles.icon}>
-                <FontAwesomeIcon
-                  style={{marginRight: 15}}
-                  icon={faEdit}
-                  color={'blue'}
-                  size={25}
-                />
-                <FontAwesomeIcon icon={faTimes} color={'red'} size={25} />
-              </View>
-            </TouchableOpacity>
+            </View>
           );
         })}
       </View>
@@ -94,13 +140,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tombol: {
-    backgroundColor: 'black',
+    backgroundColor: '#075eec',
     padding: 10,
     borderRadius: 5,
     marginTop: 20,
     marginLeft: 10,
     height: 50,
     width: 100,
+    justifyContent: 'center',
   },
   textTombol: {
     color: 'white',

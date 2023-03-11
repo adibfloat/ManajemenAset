@@ -6,5 +6,17 @@ import Registrasi from './Registrasi';
 import PostData from './PostData';
 import ReadData from './ReadData';
 import Desain from './Desain';
+import EditData from './EditData';
+import DetailData from './DetailData';
 
-export {Home, Splash, Login, Registrasi, PostData, ReadData, Desain};
+export {
+  Home,
+  Splash,
+  Login,
+  Registrasi,
+  PostData,
+  ReadData,
+  Desain,
+  EditData,
+  DetailData,
+};

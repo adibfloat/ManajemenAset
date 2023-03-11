@@ -9,6 +9,8 @@ import {
   PostData,
   ReadData,
   Desain,
+  EditData,
+  DetailData,
 } from '../pages';
 import firebase from '@react-native-firebase/app';
 
@@ -50,6 +52,16 @@ const router = () => {
       <Stack.Screen
         name="Desain"
         component={Desain}
+        options={{headerShown: false}} //Buat munculin header
+      />
+      <Stack.Screen
+        name="DetailData"
+        component={DetailData}
+        options={{headerShown: false}} //Buat munculin header
+      />
+      <Stack.Screen
+        name="EditData"
+        component={EditData}
         options={{headerShown: false}} //Buat munculin header
       />
     </Stack.Navigator>
