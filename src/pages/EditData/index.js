@@ -9,44 +9,49 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import database from '@react-native-firebase/database';
+import SelectDropdown from 'react-native-select-dropdown';
 
 export default function PostData({navigation, route}) {
-  const {namaBarang, jumlahBarang, kondisi, lokasi} = route.params;
-  // const [namaBarang, setNamaBarang] = useState('');
-  // const [jumlahBarang, setJumlahBarang] = useState('');
-  // const [lokasi, setLokasi] = useState('');
-  // const [kondisi, setKondisi] = useState('');
+  const {id, namaBarang, jumlahBarang, kondisi, lokasi, satuan, waktu} =
+    route.params;
+  // const result = (...value, route.params);
+  console.log(id);
+  const [namaBarang1, setNamaBarang1] = useState(namaBarang);
+  const [jumlahBarang1, setJumlahBarang1] = useState(jumlahBarang);
+  const [lokasi1, setLokasi1] = useState(lokasi);
+  const [kondisi1, setKondisi1] = useState(kondisi);
+  const [satuan1, setSatuan1] = useState(satuan);
+  // const kondisi2 = [kondisi];
+  const kondisi2 = ['Baik', 'Buruk'];
+  const satuan2 = ['Dos', 'Buah', 'Set', 'Unit'];
 
-  const [data, setData] = useState('');
-  useEffect(() => {
-    database()
-      .ref('/aset')
-      .once('value')
-      .then(snapshot => {
-        // console.log('User data: ', snapshot.val());
-        setData(snapshot.val());
-      })
-      .catch(err => console.log(err));
-  }, []);
+  // const [data, setData] = useState('');
+  // useEffect(() => {
+  //   database()
+  //     .ref('/aset')
+  //     .once('value')
+  //     .then(snapshot => {
+  //       // console.log('User data: ', snapshot.val());
+  //       setData(snapshot.val());
+  //     })
+  //     .catch(err => console.log(err));
+  // }, []);
   // console.log(data);
 
   //Data diubah
   const submit = () => {
-    if (
-      namaBarang == '' ||
-      jumlahBarang == '' ||
-      lokasi == '' ||
-      kondisi == ''
-    ) {
+    if (namaBarang1 == '' || jumlahBarang1 == '' || lokasi1 == '') {
       Alert.alert('Error', 'Form tidak boleh kosong');
     } else {
       database()
-        .ref(`/aset/}`)
+        .ref(`/aset/${id}`)
         .set({
-          namaBarang: namaBarang,
-          jumlahBarang: jumlahBarang,
-          lokasi: lokasi,
-          kondisi: kondisi,
+          namaBarang: namaBarang1,
+          jumlahBarang: jumlahBarang1,
+          lokasi: lokasi1,
+          waktu: waktu,
+          satuan: satuan1,
+          kondisi: kondisi1,
         })
         .then(() => {
           Alert.alert('Sukses', 'Data Berhasil Diubah');
@@ -70,16 +75,16 @@ export default function PostData({navigation, route}) {
         <TextInput
           placeholder="Meja Guru"
           style={styles.textInput}
-          value={namaBarang}
-          onChangeText={value => setNamaBarang(value)}
+          value={namaBarang1}
+          onChangeText={value => setNamaBarang1(value)}
         />
         <Text style={styles.label}>Jumlah</Text>
         <TextInput
           placeholder="1"
           style={styles.textInput}
           keyboardType={'number-pad'}
-          value={jumlahBarang}
-          onChangeText={value => setJumlahBarang(value)}
+          value={jumlahBarang1}
+          onChangeText={value => setJumlahBarang1(value)}
         />
 
         <Text style={styles.label}>Lokasi</Text>
@@ -87,17 +92,45 @@ export default function PostData({navigation, route}) {
           placeholder="Kantor Guru"
           style={styles.textInput}
           multiline={true}
-          value={lokasi}
-          onChangeText={value => setLokasi(value)}
+          value={lokasi1}
+          onChangeText={value => setLokasi1(value)}
+        />
+
+        <Text style={styles.label}>Satuan</Text>
+        <SelectDropdown
+          data={satuan2}
+          buttonStyle={styles.textInput}
+          defaultButtonText={(placeholder = satuan1)}
+          rowStyle={{
+            backgroundColor: 'white',
+            borderWidth: 1,
+          }}
+          // onChangeText={selectedItem => setKondisi(selectedItem)}
+          onSelect={(selectedItem, index) => {
+            setSatuan1(selectedItem);
+          }}
         />
 
         <Text style={styles.label}>Kondisi</Text>
-        <TextInput
+        <SelectDropdown
+          data={kondisi2}
+          defaultButtonText={(placeholder = kondisi1)}
+          buttonStyle={styles.textInput}
+          rowStyle={{
+            backgroundColor: 'white',
+            borderWidth: 1,
+          }}
+          onSelect={(selectedItem, index) => {
+            setKondisi1(selectedItem);
+          }}
+        />
+        {/* <TextInput
+        
           placeholder="Baik atau Buruk"
           style={styles.textInput}
-          value={kondisi}
-          onChangeText={value => setKondisi(value)}
-        />
+          value={kondisi1}
+          onChangeText={value => setKondisi1(value)}
+        /> */}
 
         <TouchableOpacity style={styles.tombol} onPress={submit}>
           <Text style={styles.textTombol}>Submit</Text>
@@ -135,8 +168,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#075eec',
     padding: 10,
     borderRadius: 20,
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 20,
+    marginBottom: 0,
   },
   textTombol: {
     color: 'white',

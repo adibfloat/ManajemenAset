@@ -10,7 +10,8 @@ import {
 import ViewShot, {captureRef} from 'react-native-view-shot';
 
 const DetailData = ({navigation, route}) => {
-  const {namaBarang, jumlahBarang, kondisi, lokasi} = route.params;
+  const {namaBarang, jumlahBarang, kondisi, waktu, satuan, lokasi} =
+    route.params;
   return (
     <View>
       <View style={styles.header}>
@@ -30,6 +31,12 @@ const DetailData = ({navigation, route}) => {
 
         <Text>Lokasi:</Text>
         <Text style={styles.text}>{lokasi}</Text>
+
+        <Text>Waktu:</Text>
+        <Text style={styles.text}>{waktu}</Text>
+
+        <Text>Satuan:</Text>
+        <Text style={styles.text}>{satuan}</Text>
 
         <Text>Kondisi:</Text>
         <Text style={styles.text}>{kondisi}</Text>

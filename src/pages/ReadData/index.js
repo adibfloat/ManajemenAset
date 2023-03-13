@@ -64,7 +64,7 @@ const ReadData = ({navigation}) => {
         <View style={styles.garis} />
 
         {Object.keys(data).map(value => {
-          // console.log([value]);
+          // console.log(value);
           return (
             <View>
               <View style={styles.container}>
@@ -84,7 +84,10 @@ const ReadData = ({navigation}) => {
                     // onPress={() => navigation.props('EditData', value)}
                     // onPress={() => coba(value)}
                     onPress={() =>
-                      navigation.navigate('EditData', data[value])
+                      navigation.navigate('EditData', {
+                        ...data[value],
+                        id: value,
+                      })
                     }>
                     <FontAwesomeIcon
                       style={{marginRight: 15}}

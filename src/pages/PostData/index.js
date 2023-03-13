@@ -5,10 +5,10 @@ import {
   Text,
   Alert,
   TextInput,
-  Button,
   TouchableOpacity,
 } from 'react-native';
 import database from '@react-native-firebase/database';
+import SelectDropdown from 'react-native-select-dropdown';
 
 //ID Generator
 function makeid(length) {
@@ -29,15 +29,31 @@ export default function PostData({navigation}) {
   const [jumlahBarang, setJumlahBarang] = useState('');
   const [lokasi, setLokasi] = useState('');
   const [kondisi, setKondisi] = useState('');
-  const [button, setButton] = useState('simpan');
+  const [satuan, setSatuan] = useState('');
+  const [waktu, setWaktu] = useState('');
+
+  const satuan1 = ['Dos', 'Buah', 'Set', 'Unit'];
+  const kondisi1 = ['Baik', 'Buruk'];
+
+  useEffect(() => {
+    var date = new Date().getDate();
+    var month = new Date().getMonth();
+    var year = new Date().getFullYear();
+    var hours = new Date().getHours();
+    var min = new Date().getMinutes();
+    var sec = new Date().getSeconds();
+    setWaktu(
+      date + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + sec,
+    );
+  }, []);
 
   //Data ditambahkan
   const submit = () => {
     if (
       namaBarang == '' ||
       jumlahBarang == '' ||
-      lokasi == '' ||
-      kondisi == ''
+      lokasi == ''
+      // kondisi == ''
     ) {
       Alert.alert('Error', 'Form tidak boleh kosong');
     } else {
@@ -47,6 +63,8 @@ export default function PostData({navigation}) {
           namaBarang: namaBarang,
           jumlahBarang: jumlahBarang,
           lokasi: lokasi,
+          waktu: waktu,
+          satuan: satuan,
           kondisi: kondisi,
         })
         .then(() => {
@@ -92,13 +110,50 @@ export default function PostData({navigation}) {
           onChangeText={value => setLokasi(value)}
         />
 
+        <Text style={styles.label}>Waktu</Text>
+        <Text
+          style={styles.textInput}
+          multiline={true}
+          value={waktu}
+          onChangeText={value => setWaktu(value)}>
+          {waktu}
+        </Text>
+
+        <Text style={styles.label}>Satuan</Text>
+        <SelectDropdown
+          data={satuan1}
+          buttonStyle={styles.textInput}
+          defaultButtonText={(placeholder = '--Pilih Satuan--')}
+          rowStyle={{
+            backgroundColor: 'white',
+            borderWidth: 1,
+          }}
+          // onChangeText={selectedItem => setKondisi(selectedItem)}
+          onSelect={(selectedItem, index) => {
+            setSatuan(selectedItem);
+          }}
+        />
+
         <Text style={styles.label}>Kondisi</Text>
-        <TextInput
+        <SelectDropdown
+          data={kondisi1}
+          buttonStyle={styles.textInput}
+          defaultButtonText={(placeholder = '--Baik atau Buruk--')}
+          rowStyle={{
+            backgroundColor: 'white',
+            borderWidth: 1,
+          }}
+          // onChangeText={selectedItem => setKondisi(selectedItem)}
+          onSelect={(selectedItem, index) => {
+            setKondisi(selectedItem);
+          }}
+        />
+        {/* <TextInput
           placeholder="Baik atau Buruk"
           style={styles.textInput}
           value={kondisi}
           onChangeText={value => setKondisi(value)}
-        />
+        /> */}
 
         <TouchableOpacity style={styles.tombol} onPress={submit}>
           <Text style={styles.textTombol}>Submit</Text>
