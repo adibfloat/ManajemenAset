@@ -25,19 +25,6 @@ export default function PostData({navigation, route}) {
   const kondisi2 = ['Baik', 'Buruk'];
   const satuan2 = ['Dos', 'Buah', 'Set', 'Unit'];
 
-  // const [data, setData] = useState('');
-  // useEffect(() => {
-  //   database()
-  //     .ref('/aset')
-  //     .once('value')
-  //     .then(snapshot => {
-  //       // console.log('User data: ', snapshot.val());
-  //       setData(snapshot.val());
-  //     })
-  //     .catch(err => console.log(err));
-  // }, []);
-  // console.log(data);
-
   //Data diubah
   const submit = () => {
     if (namaBarang1 == '' || jumlahBarang1 == '' || lokasi1 == '') {
