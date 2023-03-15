@@ -67,7 +67,7 @@ export default function PostData({navigation, route}) {
         />
         <Text style={styles.label}>Jumlah</Text>
         <TextInput
-          placeholder="1"
+          placeholder="0"
           style={styles.textInput}
           keyboardType={'number-pad'}
           value={jumlahBarang1}

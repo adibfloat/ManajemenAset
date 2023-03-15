@@ -11,7 +11,11 @@ import baca from '../../assets/image/buku.jpg';
 import tulis from '../../assets/image/menulis.png';
 import scan from '../../assets/image/scan.png';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import {
+  faBook,
+  faPencilAlt,
+  faBarcode,
+} from '@fortawesome/free-solid-svg-icons';
 
 const Home = ({navigation, route}) => {
   // const email = route.params.email;
@@ -26,32 +30,41 @@ const Home = ({navigation, route}) => {
           style={styles.box}
           onPress={() => navigation.navigate('ReadData')}>
           <View style={styles.inner}>
-            <Image style={styles.logo} source={baca} />
-            <Text>Baca Data</Text>
+            {/* <Image style={styles.logo} source={baca} /> */}
+            <FontAwesomeIcon icon={faBook} color={'white'} size={60} />
+            <View style={styles.coba}>
+              <Text style={styles.text}>Baca Data</Text>
+            </View>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.box}
           onPress={() => navigation.navigate('PostData')}>
           <View style={styles.inner}>
-            <Image style={styles.logo} source={tulis} />
-            <Text>Tambah Data</Text>
+            {/* <Image style={styles.logo} source={tulis} /> */}
+            <FontAwesomeIcon icon={faPencilAlt} color={'white'} size={60} />
+            <View style={styles.coba}>
+              <Text style={styles.text}>Tambah Data</Text>
+            </View>
           </View>
         </TouchableOpacity>
         <View style={styles.box}>
           <View style={styles.inner}>
-            <Image style={styles.logo} source={scan} />
-            <Text>Scanning</Text>
+            {/* <Image style={styles.logo} source={scan} /> */}
+            <FontAwesomeIcon icon={faBarcode} color={'white'} size={60} />
+            <View style={styles.coba}>
+              <Text style={styles.text}>Scanning</Text>
+            </View>
           </View>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.box}
           onPress={() => navigation.navigate('Desain')}>
           <View style={styles.inner}>
             <Image style={styles.logo} source={tulis} />
             <Text>Desain</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </SafeAreaView>
     // <View style={Styles.page}>
@@ -98,6 +111,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
+  coba: {
+    marginTop: 10,
+  },
   box: {
     width: '50%',
     height: 190,
@@ -106,20 +122,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inner: {
-    // borderRadius: 50,
+    borderRadius: 50,
     marginTop: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#075eec',
     alignItems: 'center',
     justifyContent: 'center',
     width: 150,
     height: 150,
-    borderRadius: 50,
   },
+  text: {
+    color: 'white',
+    fontSize: 15,
+  },
+  //
   logo: {
     width: 100,
     height: 100,
+    borderRadius: 30,
   },
-  //
+
   subContainer: {
     backgroundColor: 'white',
     padding: 15,

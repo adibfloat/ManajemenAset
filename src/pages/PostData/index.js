@@ -138,7 +138,7 @@ export default function PostData({navigation}) {
         <SelectDropdown
           data={kondisi1}
           buttonStyle={styles.textInput}
-          defaultButtonText={(placeholder = '--Baik atau Buruk--')}
+          defaultButtonText={(placeholder = '--Pilih Kondisi--')}
           rowStyle={{
             backgroundColor: 'white',
             borderWidth: 1,

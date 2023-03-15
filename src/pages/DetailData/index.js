@@ -13,7 +13,7 @@ const DetailData = ({navigation, route}) => {
   const {namaBarang, jumlahBarang, kondisi, waktu, satuan, lokasi} =
     route.params;
   return (
-    <View>
+    <View style={styles.coba}>
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.tombol}
@@ -48,6 +48,11 @@ const DetailData = ({navigation, route}) => {
 export default DetailData;
 
 const styles = StyleSheet.create({
+  coba: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#e8ecf4',
+  },
   pages: {
     padding: 20,
     margin: 30,
@@ -67,7 +72,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   tombol: {
-    backgroundColor: 'black',
+    backgroundColor: '#075eec',
     justifyContent: 'center',
     borderRadius: 30,
     marginTop: 10,
