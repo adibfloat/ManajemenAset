@@ -48,7 +48,10 @@ const Home = ({navigation, route}) => {
             </View>
           </View>
         </TouchableOpacity>
-        <View style={styles.box}>
+
+        <TouchableOpacity
+          style={styles.box}
+          onPress={() => navigation.navigate('Desain')}>
           <View style={styles.inner}>
             {/* <Image style={styles.logo} source={scan} /> */}
             <FontAwesomeIcon icon={faBarcode} color={'white'} size={60} />
@@ -56,7 +59,7 @@ const Home = ({navigation, route}) => {
               <Text style={styles.text}>Scanning</Text>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
         {/* <TouchableOpacity
           style={styles.box}
           onPress={() => navigation.navigate('Desain')}>
