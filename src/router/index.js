@@ -11,6 +11,8 @@ import {
   Desain,
   EditData,
   DetailData,
+  Panduan,
+  Saya,
 } from '../pages';
 import firebase from '@react-native-firebase/app';
 
@@ -62,6 +64,18 @@ const router = () => {
       <Stack.Screen
         name="EditData"
         component={EditData}
+        options={{headerShown: false}} //Buat munculin header
+      />
+
+      <Stack.Screen
+        name="Panduan"
+        component={Panduan}
+        options={{headerShown: false}} //Buat munculin header
+      />
+
+      <Stack.Screen
+        name="Saya"
+        component={Saya}
         options={{headerShown: false}} //Buat munculin header
       />
     </Stack.Navigator>

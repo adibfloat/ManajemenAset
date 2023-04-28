@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Image,
+  ScrollView,
 } from 'react-native';
 import baca from '../../assets/image/buku.jpg';
 import tulis from '../../assets/image/menulis.png';
@@ -15,6 +16,10 @@ import {
   faBook,
   faPencilAlt,
   faBarcode,
+  faUser,
+  faQuestion,
+  faSignOut,
+  faList,
 } from '@fortawesome/free-solid-svg-icons';
 
 const Home = ({navigation, route}) => {
@@ -22,54 +27,100 @@ const Home = ({navigation, route}) => {
   // console.log(email);
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text>Header</Text>
-      </View>
-      <View style={styles.boxContainer}>
-        <TouchableOpacity
-          style={styles.box}
-          onPress={() => navigation.navigate('ReadData')}>
+      <ScrollView>
+        <View style={styles.header}>
           <View style={styles.inner}>
-            {/* <Image style={styles.logo} source={baca} /> */}
-            <FontAwesomeIcon icon={faBook} color={'white'} size={60} />
-            <View style={styles.coba}>
-              <Text style={styles.text}>Baca Data</Text>
-            </View>
+            <Text>Header</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.box}
-          onPress={() => navigation.navigate('PostData')}>
-          <View style={styles.inner}>
-            {/* <Image style={styles.logo} source={tulis} /> */}
-            <FontAwesomeIcon icon={faPencilAlt} color={'white'} size={60} />
-            <View style={styles.coba}>
-              <Text style={styles.text}>Tambah Data</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity
-          style={styles.box}
-          onPress={() => navigation.navigate('Desain')}>
-          <View style={styles.inner}>
-            {/* <Image style={styles.logo} source={scan} /> */}
-            <FontAwesomeIcon icon={faBarcode} color={'white'} size={60} />
-            <View style={styles.coba}>
-              <Text style={styles.text}>Scanning</Text>
+        <View style={styles.boxContainer}>
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => navigation.navigate('ReadData')}>
+            <View style={styles.inner}>
+              {/* <Image style={styles.logo} source={baca} /> */}
+              <FontAwesomeIcon icon={faBook} color={'white'} size={60} />
+              <View style={styles.coba}>
+                <Text style={styles.text}>Informasi Data Aset</Text>
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
-        {/* <TouchableOpacity
-          style={styles.box}
-          onPress={() => navigation.navigate('Desain')}>
-          <View style={styles.inner}>
-            <Image style={styles.logo} source={tulis} />
-            <Text>Desain</Text>
-          </View>
-        </TouchableOpacity> */}
-      </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => navigation.navigate('PostData')}>
+            <View style={styles.inner}>
+              {/* <Image style={styles.logo} source={tulis} /> */}
+              <FontAwesomeIcon icon={faPencilAlt} color={'white'} size={60} />
+              <View style={styles.coba}>
+                <Text style={styles.text}>Tambah Data</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => navigation.navigate('Desain')}>
+            <View style={styles.inner}>
+              {/* <Image style={styles.logo} source={scan} /> */}
+              <FontAwesomeIcon icon={faBarcode} color={'white'} size={60} />
+              <View style={styles.coba}>
+                <Text style={styles.text}>Scanning</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => navigation.navigate('Desain')}>
+            <View style={styles.inner}>
+              {/* <Image style={styles.logo} source={scan} /> */}
+              <FontAwesomeIcon icon={faList} color={'white'} size={60} />
+              <View style={styles.coba}>
+                <Text style={styles.text}>Rangkap Data</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => navigation.navigate('Panduan')}>
+            <View style={styles.inner}>
+              {/* <Image style={styles.logo} source={scan} /> */}
+              <FontAwesomeIcon icon={faQuestion} color={'white'} size={60} />
+              <View style={styles.coba}>
+                <Text style={styles.text}>Panduan</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => navigation.navigate('Saya')}>
+            <View style={styles.inner}>
+              {/* <Image style={styles.logo} source={scan} /> */}
+              <FontAwesomeIcon icon={faUser} color={'white'} size={60} />
+              <View style={styles.coba}>
+                <Text style={styles.text}>Tentang Saya</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => navigation.navigate('Login')}>
+            <View style={styles.inner}>
+              {/* <Image style={styles.logo} source={scan} /> */}
+              <FontAwesomeIcon icon={faSignOut} color={'white'} size={60} />
+              <View style={styles.coba}>
+                <Text style={styles.text}>Keluar</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </SafeAreaView>
+
     // <View style={Styles.page}>
     //   <Text> Halaman Home </Text>
     //   <Text style={{color: 'black'}}>{/* {email}  */}</Text>
@@ -101,16 +152,24 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: '15%',
-    backgroundColor: 'grey',
+    height: '20%',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // subHeader: {
+  //   padding: 10,
+  //   width: '100%',
+  //   height: '15%',
+  //   backgroundColor: 'grey',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  // },
   boxContainer: {
     width: '100%',
-    height: '85%',
     backgroundColor: '#e8ecf4',
-    padding: 5,
+    padding: 10,
+    marginBottom: 20,
     flexDirection: 'row',
     flexWrap: 'wrap',
   },

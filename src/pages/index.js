@@ -8,6 +8,8 @@ import ReadData from './ReadData';
 import Desain from './Desain';
 import EditData from './EditData';
 import DetailData from './DetailData';
+import Panduan from './Panduan';
+import Saya from './Saya';
 
 export {
   Home,
@@ -19,4 +21,6 @@ export {
   Desain,
   EditData,
   DetailData,
+  Panduan,
+  Saya,
 };

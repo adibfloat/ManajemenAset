@@ -63,6 +63,7 @@ function Desain({navigation}) {
           buttonNegative: 'Cancel',
         }}
       />
+
       <TouchableOpacity
         style={styles.iconButtonHomeContainer}
         title={`Flash ${flash ? 'OFF' : 'ON'}`}
