@@ -63,17 +63,18 @@ const ReadData = ({navigation}) => {
 
         <View style={styles.garis} />
 
-        {Object.keys(data).map(value => {
+        {Object.keys(data).map((value, index) => {
           // console.log(value);
+          // console.log(index);
           return (
-            <View>
+            <View key={index}>
               <View style={styles.container}>
                 <TouchableOpacity
                   onPress={() => {
                     /* Menuju Detail Data */
                     navigation.navigate('DetailData', data[value]);
                   }}>
-                  <View key={value}>
+                  <View>
                     <Text style={styles.nama}>{data[value].namaBarang}</Text>
                     <Text style={styles.lokasi}>{data[value].lokasi}</Text>
                   </View>
