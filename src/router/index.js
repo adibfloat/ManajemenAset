@@ -14,7 +14,6 @@ import {
   Panduan,
   Saya,
 } from '../pages';
-import firebase from '@react-native-firebase/app';
 
 const Stack = createNativeStackNavigator();
 
