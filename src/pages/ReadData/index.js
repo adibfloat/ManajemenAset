@@ -74,7 +74,7 @@ const ReadData = ({ navigation }) => {
                     <TouchableOpacity
                       onPress={() => {
                         /* Menuju Detail Data */
-                        navigation.navigate('DetailData', data[value]);
+                        navigation.navigate('DetailData', {id: value, datas: data[value]});
                       }}>
                       <View>
                         <Text style={styles.nama}>{data[value].namaBarang}</Text>

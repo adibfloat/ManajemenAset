@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, { useState, useRef, useCallback } from 'react';
+import Barcode from '@kichiyaki/react-native-barcode-generator';
 import {
   Text,
   StyleSheet,
@@ -6,12 +7,108 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Image,
+  Dimensions,
+  Platform,
+  PermissionsAndroid,
+  ScrollView
 } from 'react-native';
-import ViewShot, {captureRef} from 'react-native-view-shot';
+import ViewShot, { captureRef } from 'react-native-view-shot';
+import Share from 'react-native-share'
+import RNFetchBlob from 'rn-fetch-blob'
 
-const DetailData = ({navigation, route}) => {
-  const {namaBarang, jumlahBarang, kondisi, waktu, satuan, lokasi} =
-    route.params;
+const DetailData = ({ navigation, route }) => {
+  const { id, datas } = route.params;
+
+  const [BarImage, setBarImage] = useState('');
+  const [showDialog, setShowDialog] = useState(false);
+  const [loading, setloading] = useState(false);
+  const ref = useRef();
+
+  const shareQR = useCallback(() => {
+    captureRef(ref, {
+      format: "jpg",
+      quality: 0.8,
+      result: "base64",
+    }).then(
+      (b64) => {
+        const shareImageBase64 = {
+          title: "Barcode",
+          message: "Here is my barcode!",
+          url: `data:image/jpeg;base64,${b64}`
+        };
+        setBarImage(String(shareImageBase64.url));
+        Share.open(shareImageBase64);
+      },
+      (error) => console.error("Oops, snapshot failed", error)
+    );
+  }, []);
+
+  const downloadQR = useCallback(() => {
+    setShowDialog(true)
+    setloading(true)
+    captureRef(ref, {
+      format: "jpg",
+      quality: 0.8,
+      result: "base64",
+    }).then(
+      async (b64) => {
+        const shareImageBase64 = {
+          title: "Barcode",
+          message: "Here is my barcode!",
+          url: `data:image/jpeg;base64,${b64}`
+        };
+        setBarImage(String(shareImageBase64.url));
+
+        if (Platform.OS === 'ios') {
+          saveImage(String(shareImageBase64.url));
+        } else {
+          try {
+            const granted = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+              {
+                title: 'Storage Permission Required',
+                message: 'App needs access to your storage to download the QR code image',
+              }
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+              console.log('Storage Permission Granted');
+              saveImage(String(shareImageBase64.url));
+            } else {
+              console.log('Storage Permission Not Granted');
+            }
+          } catch (err) {
+            console.log(err)
+          }
+        }
+      },
+      (error) => console.error("Oops, snapshot failed", error)
+    );
+  }, [])
+
+  const saveImage = (barcode) => {
+    setloading(false)
+    barcode = barcode.split('data:image/jpeg;base64,')[1]
+
+    let date = new Date();
+    const { fs } = RNFetchBlob;
+    let filename = '/barcode_' + Math.floor(date.getTime() + date.getSeconds() / 2) + '.jpeg';
+    let PictureDir = fs.dirs.DownloadDir + filename;
+
+    fs.writeFile(PictureDir, barcode, 'base64')
+      .then(() => {
+        RNFetchBlob.android.addCompleteDownload({
+          title: '🎁 Here is your barcode!',
+          useDownloadManager: true,
+          showNotification: true,
+          notification: true,
+          path: PictureDir,
+          mime: 'image/jpeg',
+          description: 'Image',
+        });
+      })
+      .catch((err) => { console.log('ERROR: ', err) })
+  }
+
   return (
     <View style={styles.coba}>
       <View style={styles.header}>
@@ -22,25 +119,51 @@ const DetailData = ({navigation, route}) => {
         </TouchableOpacity>
         <View style={styles.garis} />
       </View>
-      <View style={styles.pages}>
-        <Text>Nama Barang:</Text>
-        <Text style={styles.text}>{namaBarang}</Text>
+      <ScrollView>
+        <View style={styles.pages}>
+          <Text>Nama Barang:</Text>
+          <Text style={styles.text}>{datas.namaBarang}</Text>
 
-        <Text>Jumlah Barang:</Text>
-        <Text style={styles.text}>{jumlahBarang}</Text>
+          <Text>Jumlah Barang:</Text>
+          <Text style={styles.text}>{datas.jumlahBarang}</Text>
 
-        <Text>Lokasi:</Text>
-        <Text style={styles.text}>{lokasi}</Text>
+          <Text>Lokasi:</Text>
+          <Text style={styles.text}>{datas.lokasi}</Text>
 
-        <Text>Waktu:</Text>
-        <Text style={styles.text}>{waktu}</Text>
+          <Text>Waktu:</Text>
+          <Text style={styles.text}>{datas.waktu}</Text>
 
-        <Text>Satuan:</Text>
-        <Text style={styles.text}>{satuan}</Text>
+          <Text>Satuan:</Text>
+          <Text style={styles.text}>{datas.satuan}</Text>
 
-        <Text>Kondisi:</Text>
-        <Text style={styles.text}>{kondisi}</Text>
-      </View>
+          <Text>Kondisi:</Text>
+          <Text style={styles.text}>{datas.kondisi}</Text>
+
+        </View>
+
+        <View style={[styles.pages, { marginTop: 0 }]}>
+          <ViewShot ref={ref}>
+            <Barcode
+              format="CODE128"
+              value={id}
+              text={id}
+              textStyle={{ color: '#000' }}
+              maxWidth={Dimensions.get('window').width / 1.5}
+            />
+          </ViewShot>
+
+          <View style={{ height: 20 }} />
+
+          <TouchableOpacity style={styles.button} onPress={() => { shareQR() }}>
+            <Text style={styles.textButton}>Share</Text>
+          </TouchableOpacity>
+          <View style={{ height: 20 }} />
+          <TouchableOpacity style={styles.button} onPress={() => { downloadQR() }}>
+            <Text style={styles.textButton}>download</Text>
+          </TouchableOpacity>
+
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -94,4 +217,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingTop: 10,
   },
+  button: {
+    padding: 20,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'blue'
+  },
+  textButton: {
+    color: '#fff'
+  }
 });
