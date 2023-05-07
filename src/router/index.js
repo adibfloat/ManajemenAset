@@ -8,7 +8,7 @@ import {
   Registrasi,
   PostData,
   ReadData,
-  Desain,
+  Scan,
   EditData,
   DetailData,
   Panduan,
@@ -51,8 +51,8 @@ const router = () => {
         options={{headerShown: false}} //Buat munculin header
       />
       <Stack.Screen
-        name="Desain"
-        component={Desain}
+        name="Scan"
+        component={Scan}
         options={{headerShown: false}} //Buat munculin header
       />
       <Stack.Screen

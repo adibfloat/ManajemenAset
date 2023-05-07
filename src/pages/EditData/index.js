@@ -12,7 +12,7 @@ import database from '@react-native-firebase/database';
 import SelectDropdown from 'react-native-select-dropdown';
 
 export default function PostData({navigation, route}) {
-  const {id, namaBarang, jumlahBarang, kondisi, lokasi, satuan, waktu} =
+  const {id, namaBarang, jumlahBarang, kondisi, lokasi, satuan} =
     route.params;
   // const result = (...value, route.params);
   console.log(id);
@@ -21,9 +21,23 @@ export default function PostData({navigation, route}) {
   const [lokasi1, setLokasi1] = useState(lokasi);
   const [kondisi1, setKondisi1] = useState(kondisi);
   const [satuan1, setSatuan1] = useState(satuan);
+  const [waktu, setWaktu] = useState('');
   // const kondisi2 = [kondisi];
   const kondisi2 = ['Baik', 'Buruk'];
   const satuan2 = ['Dos', 'Buah', 'Set', 'Unit'];
+  const ruangan = ['Kelas 10 IPA', 'Kelas 10 IPS', 'Kelas 10 Agama', 'Kelas 11 IPA', 'Kelas 11 IPS', 'Kelas 11 Agama', 'Kelas 12 IPA', 'Kelas 12 IPS', 'Kelas 12 Agama',]
+
+  useEffect(() => {
+    var date = new Date().getDate();
+    var month = new Date().getMonth();
+    var year = new Date().getFullYear();
+    var hours = new Date().getHours();
+    var min = new Date().getMinutes();
+    var sec = new Date().getSeconds();
+    setWaktu(
+      date + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + sec,
+    );
+  }, []);
 
   //Data diubah
   const submit = () => {
@@ -42,6 +56,10 @@ export default function PostData({navigation, route}) {
         })
         .then(() => {
           Alert.alert('Sukses', 'Data Berhasil Diubah');
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'ReadData' }]
+          });
         })
         .catch(err => {
           Alert.alert('Error', err.message);
@@ -75,12 +93,18 @@ export default function PostData({navigation, route}) {
         />
 
         <Text style={styles.label}>Lokasi</Text>
-        <TextInput
-          placeholder="Kantor Guru"
-          style={styles.textInput}
-          multiline={true}
-          value={lokasi1}
-          onChangeText={value => setLokasi1(value)}
+        <SelectDropdown
+          data={ruangan}
+          buttonStyle={styles.textInput}
+          defaultButtonText={(placeholder = lokasi1)}
+          rowStyle={{
+            backgroundColor: 'white',
+            borderWidth: 1,
+          }}
+          // onChangeText={selectedItem => setKondisi(selectedItem)}
+          onSelect={(selectedItem, index) => {
+            setLokasi1(selectedItem);
+          }}
         />
 
         <Text style={styles.label}>Satuan</Text>

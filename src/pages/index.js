@@ -5,7 +5,7 @@ import Login from './Login';
 import Registrasi from './Registrasi';
 import PostData from './PostData';
 import ReadData from './ReadData';
-import Desain from './Desain';
+import Scan from './Scan';
 import EditData from './EditData';
 import DetailData from './DetailData';
 import Panduan from './Panduan';
@@ -18,7 +18,7 @@ export {
   Registrasi,
   PostData,
   ReadData,
-  Desain,
+  Scan,
   EditData,
   DetailData,
   Panduan,

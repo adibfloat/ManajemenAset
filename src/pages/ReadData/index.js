@@ -1,6 +1,6 @@
-import {faEdit, faTimes} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import React, {useEffect, useState} from 'react';
+import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,7 @@ import DetailData from '../DetailData';
 import EditData from '../EditData';
 import database from '@react-native-firebase/database';
 
-const ReadData = ({navigation}) => {
+const ReadData = ({ navigation }) => {
   const [data, setData] = useState('');
   useEffect(() => {
     database()
@@ -25,7 +25,7 @@ const ReadData = ({navigation}) => {
         setData(snapshot.val());
       })
       .catch(err => console.log(err));
-  }, []);
+  }, [data]);
   // console.log(data);
 
   //Menghapus
@@ -53,7 +53,7 @@ const ReadData = ({navigation}) => {
 
   return (
     //Menampilkan data dalam database
-    <ScrollView style={{width: '100%', backgroundColor: '#e8ecf4'}}>
+    <ScrollView style={{ width: '100%', backgroundColor: '#e8ecf4' }}>
       <View>
         <TouchableOpacity
           style={styles.tombol}
@@ -63,48 +63,51 @@ const ReadData = ({navigation}) => {
 
         <View style={styles.garis} />
 
-        {Object.keys(data).map((value, index) => {
-          // console.log(value);
-          // console.log(index);
-          return (
-            <View key={index}>
-              <View style={styles.container}>
-                <TouchableOpacity
-                  onPress={() => {
-                    /* Menuju Detail Data */
-                    navigation.navigate('DetailData', data[value]);
-                  }}>
-                  <View>
-                    <Text style={styles.nama}>{data[value].namaBarang}</Text>
-                    <Text style={styles.lokasi}>{data[value].lokasi}</Text>
-                  </View>
-                </TouchableOpacity>
+        {
+          data == null ? <Text>Data Kosong</Text>
+            : Object.keys(data).map((value, index) => {
+              // console.log(value);
+              // console.log(index);
+              return (
+                <View key={index}>
+                  <View style={styles.container}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        /* Menuju Detail Data */
+                        navigation.navigate('DetailData', data[value]);
+                      }}>
+                      <View>
+                        <Text style={styles.nama}>{data[value].namaBarang}</Text>
+                        <Text style={styles.lokasi}>{data[value].lokasi}</Text>
+                      </View>
+                    </TouchableOpacity>
 
-                <View style={styles.icon}>
-                  <TouchableOpacity
-                    // onPress={() => navigation.props('EditData', value)}
-                    // onPress={() => coba(value)}
-                    onPress={() =>
-                      navigation.navigate('EditData', {
-                        ...data[value],
-                        id: value,
-                      })
-                    }>
-                    <FontAwesomeIcon
-                      style={{marginRight: 15}}
-                      icon={faEdit}
-                      color={'blue'}
-                      size={25}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => hapus(value)}>
-                    <FontAwesomeIcon icon={faTimes} color={'red'} size={25} />
-                  </TouchableOpacity>
+                    <View style={styles.icon}>
+                      <TouchableOpacity
+                        // onPress={() => navigation.props('EditData', value)}
+                        // onPress={() => coba(value)}
+                        onPress={() =>
+                          navigation.navigate('EditData', {
+                            ...data[value],
+                            id: value,
+                          })
+                        }>
+                        <FontAwesomeIcon
+                          style={{ marginRight: 15 }}
+                          icon={faEdit}
+                          color={'blue'}
+                          size={25}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => hapus(value)}>
+                        <FontAwesomeIcon icon={faTimes} color={'red'} size={25} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
-              </View>
-            </View>
-          );
-        })}
+              );
+            })
+        }
       </View>
     </ScrollView>
   );

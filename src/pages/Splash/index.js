@@ -1,12 +1,20 @@
-import react, {useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { getData } from '../../utils/localStorage';
 
-const Splash = ({navigation}) => {
+const Splash = ({ navigation }) => {
   useEffect(() => {
-    setTimeout(() => {
-      navigation.replace('Login');
-    }, 3000);
+    getData('user').then(res => {
+      if (res) {
+        navigation.replace('Home', { email: res.email })
+      } else {
+        setTimeout(() => {
+          navigation.replace('Login');
+        }, 3000);
+      }
+    })
   }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.tulisan}>Splash</Text>

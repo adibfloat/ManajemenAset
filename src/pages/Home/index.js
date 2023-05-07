@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component, useEffect } from 'react';
 import {
   Text,
   StyleSheet,
@@ -7,11 +7,13 @@ import {
   SafeAreaView,
   Image,
   ScrollView,
+  Alert,
+  BackHandler
 } from 'react-native';
 import baca from '../../assets/image/buku.jpg';
 import tulis from '../../assets/image/menulis.png';
 import scan from '../../assets/image/scan.png';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
   faBook,
   faPencilAlt,
@@ -20,11 +22,46 @@ import {
   faQuestion,
   faSignOut,
   faList,
+  faPowerOff
 } from '@fortawesome/free-solid-svg-icons';
+import { clearStorage } from '../../utils/localStorage';
 
-const Home = ({navigation, route}) => {
+const Home = ({ navigation, route }) => {
   // const email = route.params.email;
   // console.log(email);
+
+  const logout = () => {
+    clearStorage();
+    Alert.alert('Berhasil', 'Anda sudah Keluar', [
+      {
+        text: 'Ok',
+        onPress: () => {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Login' }]
+          });
+        },
+      },
+    ]);
+  };
+
+  const exit = () => {
+    Alert.alert('Keluar', 'Yakin mau keluar dari aplikasi ?',
+        [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('cancel'),
+                style: 'cancel'
+            },
+            {
+                text: 'Ok',
+                onPress: () => BackHandler.exitApp(),
+                style: 'default'
+            },
+        ]
+    )
+}
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -60,7 +97,7 @@ const Home = ({navigation, route}) => {
 
           <TouchableOpacity
             style={styles.box}
-            onPress={() => navigation.navigate('Desain')}>
+            onPress={() => navigation.navigate('Scan')}>
             <View style={styles.inner}>
               {/* <Image style={styles.logo} source={scan} /> */}
               <FontAwesomeIcon icon={faBarcode} color={'white'} size={60} />
@@ -72,7 +109,7 @@ const Home = ({navigation, route}) => {
 
           <TouchableOpacity
             style={styles.box}
-            onPress={() => navigation.navigate('Desain')}>
+            onPress={() => console.log('rangkap data')}>
             <View style={styles.inner}>
               {/* <Image style={styles.logo} source={scan} /> */}
               <FontAwesomeIcon icon={faList} color={'white'} size={60} />
@@ -108,10 +145,21 @@ const Home = ({navigation, route}) => {
 
           <TouchableOpacity
             style={styles.box}
-            onPress={() => navigation.navigate('Login')}>
+            onPress={() => {logout()}}>
             <View style={styles.inner}>
               {/* <Image style={styles.logo} source={scan} /> */}
               <FontAwesomeIcon icon={faSignOut} color={'white'} size={60} />
+              <View style={styles.coba}>
+                <Text style={styles.text}>Logout</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => exit()}>
+            <View style={styles.inner}>
+              <FontAwesomeIcon icon={faPowerOff} color={'white'} size={60} />
               <View style={styles.coba}>
                 <Text style={styles.text}>Keluar</Text>
               </View>

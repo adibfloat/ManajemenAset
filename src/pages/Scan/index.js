@@ -12,7 +12,7 @@ import {
 // import styles from './../styles/Style';
 import {RNCamera} from 'react-native-camera';
 
-function Desain({navigation}) {
+function Scan({navigation}) {
   const [barValue, setBarValue] = useState('');
   const [barType, setBarType] = useState('');
   const [flash, setFlash] = useState(false);
@@ -102,7 +102,7 @@ function Desain({navigation}) {
   );
 }
 
-export default Desain;
+export default Scan;
 
 const styles = StyleSheet.create({
   container: {

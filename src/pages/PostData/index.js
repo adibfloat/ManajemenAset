@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -24,7 +24,7 @@ function makeid(length) {
   return result;
 }
 
-export default function PostData({navigation}) {
+export default function PostData({ navigation }) {
   const [namaBarang, setNamaBarang] = useState('');
   const [jumlahBarang, setJumlahBarang] = useState('');
   const [lokasi, setLokasi] = useState('');
@@ -34,6 +34,7 @@ export default function PostData({navigation}) {
 
   const satuan1 = ['Dos', 'Buah', 'Set', 'Unit'];
   const kondisi1 = ['Baik', 'Buruk'];
+  const ruangan = ['Kelas 10 IPA', 'Kelas 10 IPS', 'Kelas 10 Agama', 'Kelas 11 IPA', 'Kelas 11 IPS', 'Kelas 11 Agama', 'Kelas 12 IPA', 'Kelas 12 IPS', 'Kelas 12 Agama',]
 
   useEffect(() => {
     var date = new Date().getDate();
@@ -69,6 +70,10 @@ export default function PostData({navigation}) {
         })
         .then(() => {
           Alert.alert('Sukses', 'Data Berhasil Ditambahkan');
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Home' }]
+          });
         })
         .catch(err => {
           Alert.alert('Error', err.message);
@@ -80,14 +85,14 @@ export default function PostData({navigation}) {
     <>
       <View style={styles.pages}>
         <View style={styles.header}>
-          <Text style={{fontSize: 30, marginBottom: 30, color: 'black'}}>
+          <Text style={{ fontSize: 30, marginBottom: 30, color: 'black' }}>
             Post Data
           </Text>
         </View>
 
         <Text style={styles.label}>Nama Barang</Text>
         <TextInput
-          placeholder="Meja Guru"
+          placeholder="contoh: Meja Guru"
           style={styles.textInput}
           value={namaBarang}
           onChangeText={value => setNamaBarang(value)}
@@ -102,22 +107,18 @@ export default function PostData({navigation}) {
         />
 
         <Text style={styles.label}>Lokasi</Text>
-        <TextInput
-          placeholder="Kantor Guru"
-          style={styles.textInput}
-          multiline={true}
-          value={lokasi}
-          onChangeText={value => setLokasi(value)}
+        <SelectDropdown
+          data={ruangan}
+          buttonStyle={styles.textInput}
+          defaultButtonText={(placeholder = '--Pilih Lokasi--')}
+          rowStyle={{
+            backgroundColor: 'white',
+            borderWidth: 1,
+          }}
+          onSelect={(selectedItem, index) => {
+            setLokasi(selectedItem);
+          }}
         />
-
-        <Text style={styles.label}>Waktu</Text>
-        <Text
-          style={styles.textInput}
-          multiline={true}
-          value={waktu}
-          onChangeText={value => setWaktu(value)}>
-          {waktu}
-        </Text>
 
         <Text style={styles.label}>Satuan</Text>
         <SelectDropdown

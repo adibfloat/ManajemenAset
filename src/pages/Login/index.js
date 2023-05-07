@@ -11,12 +11,11 @@ import {
   Alert,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import { storeData } from '../../utils/localStorage';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  console.log(email);
 
   //Login
   const OnLoginPress = () => {
@@ -25,7 +24,8 @@ const Login = ({navigation}) => {
     } else {
       auth()
         .signInWithEmailAndPassword(email, password)
-        .then(() => {
+        .then((userCredential) => {
+          storeData('user', {email: userCredential.user.email})
           navigation.replace('Home', {email: email});
         })
         .catch(err => {

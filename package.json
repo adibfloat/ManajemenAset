@@ -14,6 +14,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-native-fontawesome": "^0.3.0",
     "@kichiyaki/react-native-barcode-generator": "^0.6.7",
+    "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-native-firebase/app": "^17.3.1",
     "@react-native-firebase/auth": "^17.3.1",
     "@react-native-firebase/database": "^17.3.1",
@@ -29,8 +30,7 @@
     "react-native-select-dropdown": "^3.3.0",
     "react-native-share": "^8.2.1",
     "react-native-svg": "^13.8.0",
-    "react-native-view-shot": "^3.5.0",
-    "rn-fetch-blob": "^0.12.0"
+    "react-native-view-shot": "^3.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
