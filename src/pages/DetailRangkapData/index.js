@@ -1,69 +1,42 @@
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import database from '@react-native-firebase/database';
 import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  Button,
-} from 'react-native';
-import DetailData from '../DetailData';
-import EditData from '../EditData';
-import database from '@react-native-firebase/database';
 import { DataKosong } from '../../components';
 
-const ReadData = ({ navigation }) => {
-  const [data, setData] = useState('');
+const DetailRangkapData = ({ navigation, route }) => {
+  const { name } = route.params
+
+  const [data, setData] = useState(null)
+
   useEffect(() => {
     database()
-      .ref('/aset')
-      .once('value')
-      .then(snapshot => {
-        // console.log('User data: ', snapshot.val());
-        setData(snapshot.val());
+      .ref('aset')
+      .orderByChild('lokasi')
+      .startAt(name.toLowerCase())
+      .endAt(name.toLowerCase())
+      .once('value', (dataSnapshot) => {
+        setData(dataSnapshot.val())
       })
-      .catch(err => console.log(err));
-  }, [data]);
-  // console.log(data);
-
-  //Menghapus
-  const hapus = data => {
-    Alert.alert('Info', 'Anda yakin menghapus', [
-      {
-        text: 'Batal',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {
-        text: 'OK',
-        onPress: () =>
-          database()
-            .ref('/aset/' + data)
-            .remove(),
-        style: 'success',
-      },
-    ]);
-  };
-
-  const coba = data => {
-    console.log(data);
-  };
+  }, [])
 
   return (
-    //Menampilkan data dalam database
-    <ScrollView style={{ width: '100%', backgroundColor: '#e8ecf4' }}>
-      <View>
+    <View style={styles.container}>
+      <View style={styles.header}>
         <TouchableOpacity
           style={styles.tombol}
-          onPress={() => navigation.navigate('Home')}>
+          onPress={() => navigation.goBack()}>
           <Text style={styles.textTombol}>Kembali</Text>
         </TouchableOpacity>
-
-        <View style={styles.garis} />
-
+        <TouchableOpacity
+          style={[styles.tombol, { backgroundColor: 'green' }]}
+          onPress={() => console.log('export')}>
+          <Text style={styles.textTombol}>export</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.garis} />
+      <ScrollView>
         {
           data == null ? <DataKosong />
             : Object.keys(data).map((value, index) => {
@@ -71,15 +44,15 @@ const ReadData = ({ navigation }) => {
               // console.log(index);
               return (
                 <View key={index}>
-                  <View style={styles.container}>
+                  <View style={styles.container2}>
                     <TouchableOpacity
                       onPress={() => {
                         /* Menuju Detail Data */
-                        navigation.navigate('DetailData', {id: value, datas: data[value]});
+                        navigation.navigate('DetailData', { id: value, datas: data[value] });
                       }}>
                       <View>
                         <Text style={styles.nama}>{data[value].namaBarang}</Text>
-                        <Text style={styles.lokasi}>{data[value].lokasi}</Text>
+                        <Text style={styles.jumlahBarang}>{data[value].jumlahBarang}</Text>
                       </View>
                     </TouchableOpacity>
 
@@ -109,15 +82,42 @@ const ReadData = ({ navigation }) => {
               );
             })
         }
-      </View>
-    </ScrollView>
-  );
-};
-
-export default ReadData;
+      </ScrollView>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1
+  },
+  tombol: {
+    backgroundColor: '#075eec',
+    justifyContent: 'center',
+    borderRadius: 30,
+    marginTop: 10,
+    marginBottom: 10,
+    height: 40,
+    width: 100,
+  },
+  textTombol: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 16,
+  },
+  garis: {
+    borderWidth: 2,
+    marginTop: 10,
+    marginHorizontal: 30
+  },
+  header: {
+    paddingHorizontal: 30,
+    paddingTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  container2: {
     flexDirection: 'row',
     margin: 20,
     padding: 15,
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  lokasi: {
+  jumlahBarang: {
     fontSize: 12,
     color: 'grey',
   },
@@ -147,24 +147,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-  tombol: {
-    backgroundColor: '#075eec',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
-    marginLeft: 10,
-    height: 50,
-    width: 100,
-    justifyContent: 'center',
-  },
-  textTombol: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontSize: 16,
-  },
-  garis: {
-    borderWidth: 1,
-    marginTop: 20,
-  },
-});
+})
+
+export default DetailRangkapData

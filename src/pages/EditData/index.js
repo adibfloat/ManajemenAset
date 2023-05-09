@@ -25,7 +25,7 @@ export default function PostData({navigation, route}) {
   // const kondisi2 = [kondisi];
   const kondisi2 = ['Baik', 'Buruk'];
   const satuan2 = ['Dos', 'Buah', 'Set', 'Unit'];
-  const ruangan = ['Kelas 10 IPA', 'Kelas 10 IPS', 'Kelas 10 Agama', 'Kelas 11 IPA', 'Kelas 11 IPS', 'Kelas 11 Agama', 'Kelas 12 IPA', 'Kelas 12 IPS', 'Kelas 12 Agama',]
+  const ruangan = ['kelas 10 ipa', 'kelas 10 ips', 'kelas 10 agama', 'kelas 11 ipa', 'kelas 11 ips', 'kelas 11 agama', 'kelas 12 ipa', 'kelas 12 ips', 'kelas 12 agama',]
 
   useEffect(() => {
     var date = new Date().getDate();

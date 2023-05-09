@@ -109,7 +109,7 @@ const Home = ({ navigation, route }) => {
 
           <TouchableOpacity
             style={styles.box}
-            onPress={() => console.log('rangkap data')}>
+            onPress={() => navigation.navigate('RangkapData')}>
             <View style={styles.inner}>
               {/* <Image style={styles.logo} source={scan} /> */}
               <FontAwesomeIcon icon={faList} color={'white'} size={60} />

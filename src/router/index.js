@@ -13,6 +13,8 @@ import {
   DetailData,
   Panduan,
   Saya,
+  RangkapData,
+  DetailRangkapData,
 } from '../pages';
 
 const Stack = createNativeStackNavigator();
@@ -75,6 +77,16 @@ const router = () => {
       <Stack.Screen
         name="Saya"
         component={Saya}
+        options={{headerShown: false}} //Buat munculin header
+      />
+      <Stack.Screen
+        name="RangkapData"
+        component={RangkapData}
+        options={{headerShown: false}} //Buat munculin header
+      />
+      <Stack.Screen
+        name="DetailRangkapData"
+        component={DetailRangkapData}
         options={{headerShown: false}} //Buat munculin header
       />
     </Stack.Navigator>
