@@ -20,8 +20,6 @@ const DetailData = ({ navigation, route }) => {
   const { id, datas } = route.params;
 
   const [BarImage, setBarImage] = useState('');
-  const [showDialog, setShowDialog] = useState(false);
-  const [loading, setloading] = useState(false);
   const ref = useRef();
 
   const shareQR = useCallback(() => {
@@ -44,8 +42,6 @@ const DetailData = ({ navigation, route }) => {
   }, []);
 
   const downloadQR = useCallback(() => {
-    setShowDialog(true)
-    setloading(true)
     captureRef(ref, {
       format: "jpg",
       quality: 0.8,
@@ -86,7 +82,6 @@ const DetailData = ({ navigation, route }) => {
   }, [])
 
   const saveImage = (barcode) => {
-    setloading(false)
     barcode = barcode.split('data:image/jpeg;base64,')[1]
 
     let date = new Date();

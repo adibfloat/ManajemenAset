@@ -11,6 +11,7 @@ import Panduan from './Panduan';
 import Saya from './Saya';
 import RangkapData from './RangkapData';
 import DetailRangkapData from './DetailRangkapData';
+import DetailScan from './DetailScan';
 
 export {
   Home,
@@ -25,5 +26,6 @@ export {
   Panduan,
   Saya,
   RangkapData,
-  DetailRangkapData
+  DetailRangkapData,
+  DetailScan
 };

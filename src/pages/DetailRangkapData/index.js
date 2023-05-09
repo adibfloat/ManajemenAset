@@ -1,14 +1,88 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, PermissionsAndroid, Alert } from 'react-native'
 import database from '@react-native-firebase/database';
 import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { DataKosong } from '../../components';
+import XLSX from 'xlsx'
+var RNFS = require('react-native-fs');
 
 const DetailRangkapData = ({ navigation, route }) => {
   const { name } = route.params
 
   const [data, setData] = useState(null)
+
+  const exportDataToExcel = () => {
+    // Created Sample data
+    let sample_data_to_export = [];
+
+    Object.keys(data).map(value => {
+      sample_data_to_export.push({
+        "Nama Barang": data[value].namaBarang,
+        "Jumlah Barang": data[value].jumlahBarang,
+        "Satuan": data[value].satuan,
+        "Lokasi": data[value].lokasi,
+        "Waktu": data[value].waktu,
+      })
+    })
+
+    let wb = XLSX.utils.book_new();
+    let ws = XLSX.utils.json_to_sheet(sample_data_to_export)
+    XLSX.utils.book_append_sheet(wb, ws, "Users")
+    const wbout = XLSX.write(wb, { type: 'binary', bookType: "xlsx" });
+    const newName = name.replace(/ /g, '_');
+    const fileName = `${newName}.${Date.now()}`
+
+    // Write generated excel to Storage
+    RNFS.writeFile(RNFS.DownloadDirectoryPath + `/${fileName}.xlsx`, wbout, 'ascii').then((r) => {
+      Alert.alert('Export Berhasil', `File berhasil disimpan di folder Download/${fileName}`)
+    }).catch((e) => {
+      console.log('Error', e);
+    });
+  }
+
+  const handleExport = async () => {
+
+    if (data == null) {
+      return Alert.alert('Gagal', 'Data kosong')
+    }
+
+    try {
+      // Check for Permission (check if permission is already given or not)
+      let isPermitedExternalStorage = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+
+      if (!isPermitedExternalStorage) {
+
+        // Ask for permission
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: "Storage permission needed",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK"
+          }
+        );
+
+
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          // Permission Granted (calling our exportDataToExcel function)
+          exportDataToExcel();
+          console.log("Permission granted");
+        } else {
+          // Permission denied
+          console.log("Permission denied");
+        }
+      } else {
+        // Already have Permission (calling our exportDataToExcel function)
+        exportDataToExcel();
+      }
+    } catch (e) {
+      console.log('Error while checking permission');
+      console.log(e);
+      return
+    }
+  }
 
   useEffect(() => {
     database()
@@ -31,7 +105,7 @@ const DetailRangkapData = ({ navigation, route }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.tombol, { backgroundColor: 'green' }]}
-          onPress={() => console.log('export')}>
+          onPress={() => handleExport()}>
           <Text style={styles.textTombol}>export</Text>
         </TouchableOpacity>
       </View>

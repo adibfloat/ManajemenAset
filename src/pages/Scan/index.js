@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Dimensions,
@@ -10,59 +10,31 @@ import {
 } from 'react-native';
 // import {Button, Dialog} from '@rneui/themed';
 // import styles from './../styles/Style';
-import {RNCamera} from 'react-native-camera';
+import { RNCamera } from 'react-native-camera';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 
-function Scan({navigation}) {
-  const [barValue, setBarValue] = useState('');
-  const [barType, setBarType] = useState('');
+function Scan({ navigation }) {
   const [flash, setFlash] = useState(false);
-  const [showDialog, setShowDialog] = useState(false);
+
+  const handleBarCodeScanned = (value) => {
+    navigation.navigate('DetailScan', {id: value.data})
+  };
 
   return (
     <View style={styles.container}>
-      <RNCamera
-        ref={ref => {
-          this.camera = ref;
-        }}
-        captureAudio={false}
-        autoFocus={RNCamera.Constants.AutoFocus.on}
-        defaultTouchToFocus
+
+      <QRCodeScanner
+        onRead={handleBarCodeScanned}
         flashMode={
-          flash
-            ? RNCamera.Constants.FlashMode.torch
-            : RNCamera.Constants.FlashMode.off
+          flash ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off
         }
-        mirrorImage={false}
-        // onBarCodeRead={readBarcode}
-        onGoogleVisionBarcodesDetected={({barcodes}) => {
-          console.log(barcodes, barcodes.length);
-          if (barcodes.length > 0) {
-            setBarValue(barcodes[0].data);
-            setBarType(barcodes[0].format);
-            setShowDialog(true);
-          }
-        }}
-        style={{
-          flex: 1,
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          height: Dimensions.get('window').height,
-          width: Dimensions.get('window').width,
-        }}
-        type={RNCamera.Constants.Type.back}
-        androidCameraPermissionOptions={{
-          title: 'Permission to use camera',
-          message: 'We need your permission to use your camera',
-          buttonPositive: 'Ok',
-          buttonNegative: 'Cancel',
-        }}
-        androidRecordAudioPermissionOptions={{
-          title: 'Permission to use audio recording',
-          message: 'We need your permission to use your audio',
-          buttonPositive: 'Ok',
-          buttonNegative: 'Cancel',
-        }}
+        reactivate={true}
+        cameraStyle={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+        fadeIn={true}
+        showMarker={true}
+        containerStyle={{ backgroundColor: '#fff' }}
       />
+
 
       <TouchableOpacity
         style={styles.iconButtonHomeContainer}
