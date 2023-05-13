@@ -66,9 +66,7 @@ const Home = ({ navigation, route }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.header}>
-          <View style={styles.inner}>
-            <Text>Header</Text>
-          </View>
+          <Image source={require('../../assets/image/sekolah.jpeg')} style={{width:'100%', height: '100%'}} />
         </View>
 
         <View style={styles.boxContainer}>
