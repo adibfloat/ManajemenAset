@@ -32,41 +32,48 @@ const Home = ({ navigation, route }) => {
 
   const logout = () => {
     clearStorage();
-    Alert.alert('Berhasil', 'Anda sudah Keluar', [
-      {
-        text: 'Ok',
-        onPress: () => {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'Login' }]
-          });
+    Alert.alert('Logout', 'Yakin mau logout ?',
+      [
+        {
+          text: 'Ok',
+          onPress: () => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Login' }]
+            });
+          },
         },
-      },
-    ]);
+        {
+          text: 'Cancel',
+          onPress: () => console.log('cancel'),
+          style: 'cancel'
+        }
+      ]
+    );
   };
 
   const exit = () => {
     Alert.alert('Keluar', 'Yakin mau keluar dari aplikasi ?',
-        [
-            {
-                text: 'Cancel',
-                onPress: () => console.log('cancel'),
-                style: 'cancel'
-            },
-            {
-                text: 'Ok',
-                onPress: () => BackHandler.exitApp(),
-                style: 'default'
-            },
-        ]
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('cancel'),
+          style: 'cancel'
+        },
+        {
+          text: 'Ok',
+          onPress: () => BackHandler.exitApp(),
+          style: 'default'
+        },
+      ]
     )
-}
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.header}>
-          <Image source={require('../../assets/image/sekolah.jpeg')} style={{width:'100%', height: '100%'}} />
+          <Image source={require('../../assets/image/sekolah.jpeg')} style={{ width: '100%', height: '100%' }} />
         </View>
 
         <View style={styles.boxContainer}>
@@ -143,7 +150,7 @@ const Home = ({ navigation, route }) => {
 
           <TouchableOpacity
             style={styles.box}
-            onPress={() => {logout()}}>
+            onPress={() => { logout() }}>
             <View style={styles.inner}>
               {/* <Image style={styles.logo} source={scan} /> */}
               <FontAwesomeIcon icon={faSignOut} color={'white'} size={60} />
@@ -164,6 +171,7 @@ const Home = ({ navigation, route }) => {
             </View>
           </TouchableOpacity>
         </View>
+        <View style={{ height: 200 }} />
       </ScrollView>
     </SafeAreaView>
 
