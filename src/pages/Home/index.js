@@ -31,12 +31,12 @@ const Home = ({ navigation, route }) => {
   // console.log(email);
 
   const logout = () => {
-    clearStorage();
     Alert.alert('Logout', 'Yakin mau logout ?',
-      [
-        {
-          text: 'Ok',
-          onPress: () => {
+    [
+      {
+        text: 'Ok',
+        onPress: () => {
+            clearStorage();
             navigation.reset({
               index: 0,
               routes: [{ name: 'Login' }]
