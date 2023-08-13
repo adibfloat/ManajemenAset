@@ -1,12 +1,18 @@
-import { View, Text, Dimensions } from 'react-native'
-import React from 'react'
+import {View, Text, Dimensions} from 'react-native';
+import React from 'react';
 
 const DataKosong = () => {
   return (
-    <View style={{height: Dimensions.get('screen').height - 200, width: '100%', justifyContent: 'center', alignItems: 'center'}}>
-      <Text>DataKosong</Text>
+    <View
+      style={{
+        height: Dimensions.get('screen').height - 200,
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Text>Data Kosong</Text>
     </View>
-  )
-}
+  );
+};
 
-export default DataKosong
+export default DataKosong;

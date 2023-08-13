@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, {useState, useRef, useCallback} from 'react';
 import Barcode from '@kichiyaki/react-native-barcode-generator';
 import {
   Text,
@@ -10,48 +10,48 @@ import {
   Dimensions,
   Platform,
   PermissionsAndroid,
-  ScrollView
+  ScrollView,
 } from 'react-native';
-import ViewShot, { captureRef } from 'react-native-view-shot';
-import Share from 'react-native-share'
-import RNFetchBlob from 'rn-fetch-blob'
+import ViewShot, {captureRef} from 'react-native-view-shot';
+import Share from 'react-native-share';
+import RNFetchBlob from 'rn-fetch-blob';
 
-const DetailData = ({ navigation, route }) => {
-  const { id, datas } = route.params;
+const DetailData = ({navigation, route}) => {
+  const {id, datas} = route.params;
 
   const [BarImage, setBarImage] = useState('');
   const ref = useRef();
 
   const shareQR = useCallback(() => {
     captureRef(ref, {
-      format: "jpg",
+      format: 'jpg',
       quality: 0.8,
-      result: "base64",
+      result: 'base64',
     }).then(
-      (b64) => {
+      b64 => {
         const shareImageBase64 = {
-          title: "Barcode",
-          message: "Here is my barcode!",
-          url: `data:image/jpeg;base64,${b64}`
+          title: 'Barcode',
+          message: 'Here is my barcode!',
+          url: `data:image/jpeg;base64,${b64}`,
         };
         setBarImage(String(shareImageBase64.url));
         Share.open(shareImageBase64);
       },
-      (error) => console.error("Oops, snapshot failed", error)
+      error => console.error('Oops, snapshot failed', error),
     );
   }, []);
 
   const downloadQR = useCallback(() => {
     captureRef(ref, {
-      format: "jpg",
+      format: 'jpg',
       quality: 0.8,
-      result: "base64",
+      result: 'base64',
     }).then(
-      async (b64) => {
+      async b64 => {
         const shareImageBase64 = {
-          title: "Barcode",
-          message: "Here is my barcode!",
-          url: `data:image/jpeg;base64,${b64}`
+          title: 'Barcode',
+          message: 'Here is my barcode!',
+          url: `data:image/jpeg;base64,${b64}`,
         };
         setBarImage(String(shareImageBase64.url));
 
@@ -63,8 +63,9 @@ const DetailData = ({ navigation, route }) => {
               PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
               {
                 title: 'Storage Permission Required',
-                message: 'App needs access to your storage to download the QR code image',
-              }
+                message:
+                  'App needs access to your storage to download the QR code image',
+              },
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
               console.log('Storage Permission Granted');
@@ -73,20 +74,23 @@ const DetailData = ({ navigation, route }) => {
               console.log('Storage Permission Not Granted');
             }
           } catch (err) {
-            console.log(err)
+            console.log(err);
           }
         }
       },
-      (error) => console.error("Oops, snapshot failed", error)
+      error => console.error('Oops, snapshot failed', error),
     );
-  }, [])
+  }, []);
 
-  const saveImage = (barcode) => {
-    barcode = barcode.split('data:image/jpeg;base64,')[1]
+  const saveImage = barcode => {
+    barcode = barcode.split('data:image/jpeg;base64,')[1];
 
     let date = new Date();
-    const { fs } = RNFetchBlob;
-    let filename = '/barcode_' + Math.floor(date.getTime() + date.getSeconds() / 2) + '.jpeg';
+    const {fs} = RNFetchBlob;
+    let filename =
+      '/barcode_' +
+      Math.floor(date.getTime() + date.getSeconds() / 2) +
+      '.jpeg';
     let PictureDir = fs.dirs.DownloadDir + filename;
 
     fs.writeFile(PictureDir, barcode, 'base64')
@@ -101,8 +105,10 @@ const DetailData = ({ navigation, route }) => {
           description: 'Image',
         });
       })
-      .catch((err) => { console.log('ERROR: ', err) })
-  }
+      .catch(err => {
+        console.log('ERROR: ', err);
+      });
+  };
 
   return (
     <View style={styles.coba}>
@@ -133,30 +139,36 @@ const DetailData = ({ navigation, route }) => {
 
           <Text>Kondisi:</Text>
           <Text style={styles.text}>{datas.kondisi}</Text>
-
         </View>
 
-        <View style={[styles.pages, { marginTop: 0 }]}>
+        <View style={[styles.pages, {marginTop: 0}]}>
           <ViewShot ref={ref}>
             <Barcode
               format="CODE128"
               value={id}
               text={id}
-              textStyle={{ color: '#000' }}
+              textStyle={{color: '#000'}}
               maxWidth={Dimensions.get('window').width / 1.5}
             />
           </ViewShot>
 
-          <View style={{ height: 20 }} />
+          <View style={{height: 20}} />
 
-          <TouchableOpacity style={styles.button} onPress={() => { shareQR() }}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              shareQR();
+            }}>
             <Text style={styles.textButton}>Share</Text>
           </TouchableOpacity>
-          <View style={{ height: 20 }} />
-          <TouchableOpacity style={styles.button} onPress={() => { downloadQR() }}>
-            <Text style={styles.textButton}>download</Text>
+          <View style={{height: 20}} />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              downloadQR();
+            }}>
+            <Text style={styles.textButton}>Download</Text>
           </TouchableOpacity>
-
         </View>
       </ScrollView>
     </View>
@@ -217,9 +229,9 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'blue'
+    backgroundColor: 'blue',
   },
   textButton: {
-    color: '#fff'
-  }
+    color: '#fff',
+  },
 });

@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, {Component, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -8,12 +8,12 @@ import {
   Image,
   ScrollView,
   Alert,
-  BackHandler
+  BackHandler,
 } from 'react-native';
 import baca from '../../assets/image/buku.jpg';
 import tulis from '../../assets/image/menulis.png';
 import scan from '../../assets/image/scan.png';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faBook,
   faPencilAlt,
@@ -22,149 +22,174 @@ import {
   faQuestion,
   faSignOut,
   faList,
-  faPowerOff
+  faPowerOff,
 } from '@fortawesome/free-solid-svg-icons';
-import { clearStorage } from '../../utils/localStorage';
+import {clearStorage} from '../../utils/localStorage';
 
-const Home = ({ navigation, route }) => {
+const Home = ({navigation, route}) => {
   // const email = route.params.email;
   // console.log(email);
 
+  // Logout
+  // const logout = () => {
+  //   clearStorage();
+  //   Alert.alert('Berhasil', 'Anda sudah Logout', [
+  //     {
+  //       text: 'Ok',
+  //       onPress: () => {
+  //         navigation.reset({
+  //           index: 0,
+  //           routes: [{name: 'Login'}],
+  //         });
+  //       },
+  //     },
+  //   ]);
+  // };
+
   const logout = () => {
-    clearStorage();
-    Alert.alert('Berhasil', 'Anda sudah Keluar', [
+    Alert.alert('Logout', 'Yakin mau logout ?', [
       {
         text: 'Ok',
         onPress: () => {
+          clearStorage();
           navigation.reset({
             index: 0,
-            routes: [{ name: 'Login' }]
+            routes: [{name: 'Login'}],
           });
         },
+      },
+      {
+        text: 'Cancel',
+        onPress: () => console.log('cancel'),
+        style: 'cancel',
       },
     ]);
   };
 
+  // Keluar Aplikasi
   const exit = () => {
-    Alert.alert('Keluar', 'Yakin mau keluar dari aplikasi ?',
-        [
-            {
-                text: 'Cancel',
-                onPress: () => console.log('cancel'),
-                style: 'cancel'
-            },
-            {
-                text: 'Ok',
-                onPress: () => BackHandler.exitApp(),
-                style: 'default'
-            },
-        ]
-    )
-}
+    Alert.alert('Keluar', 'Yakin mau keluar dari aplikasi?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('cancel'),
+        style: 'cancel',
+      },
+      {
+        text: 'Ok',
+        onPress: () => BackHandler.exitApp(),
+        style: 'default',
+      },
+    ]);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View style={styles.header}>
-          <Image source={require('../../assets/image/sekolah.jpeg')} style={{width:'100%', height: '100%'}} />
-        </View>
+      <>
+        <ScrollView>
+          <View style={styles.header}>
+            <Image
+              source={require('../../assets/image/sekolah.jpg')}
+              style={{width: '100%', height: 200}}
+            />
+          </View>
 
-        <View style={styles.boxContainer}>
-          <TouchableOpacity
-            style={styles.box}
-            onPress={() => navigation.navigate('ReadData')}>
-            <View style={styles.inner}>
-              {/* <Image style={styles.logo} source={baca} /> */}
-              <FontAwesomeIcon icon={faBook} color={'white'} size={60} />
-              <View style={styles.coba}>
-                <Text style={styles.text}>Informasi Data Aset</Text>
+          <View style={styles.boxContainer}>
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => navigation.navigate('ReadData')}>
+              <View style={styles.inner}>
+                {/* <Image style={styles.logo} source={baca} /> */}
+                <FontAwesomeIcon icon={faBook} color={'white'} size={60} />
+                <View style={styles.coba}>
+                  <Text style={styles.text}>Informasi Data Aset</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.box}
-            onPress={() => navigation.navigate('PostData')}>
-            <View style={styles.inner}>
-              {/* <Image style={styles.logo} source={tulis} /> */}
-              <FontAwesomeIcon icon={faPencilAlt} color={'white'} size={60} />
-              <View style={styles.coba}>
-                <Text style={styles.text}>Tambah Data</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => navigation.navigate('PostData')}>
+              <View style={styles.inner}>
+                {/* <Image style={styles.logo} source={tulis} /> */}
+                <FontAwesomeIcon icon={faPencilAlt} color={'white'} size={60} />
+                <View style={styles.coba}>
+                  <Text style={styles.text}>Tambah Data</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.box}
-            onPress={() => navigation.navigate('Scan')}>
-            <View style={styles.inner}>
-              {/* <Image style={styles.logo} source={scan} /> */}
-              <FontAwesomeIcon icon={faBarcode} color={'white'} size={60} />
-              <View style={styles.coba}>
-                <Text style={styles.text}>Scanning</Text>
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => navigation.navigate('Scan')}>
+              <View style={styles.inner}>
+                {/* <Image style={styles.logo} source={scan} /> */}
+                <FontAwesomeIcon icon={faBarcode} color={'white'} size={60} />
+                <View style={styles.coba}>
+                  <Text style={styles.text}>Scanning</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.box}
-            onPress={() => navigation.navigate('RangkapData')}>
-            <View style={styles.inner}>
-              {/* <Image style={styles.logo} source={scan} /> */}
-              <FontAwesomeIcon icon={faList} color={'white'} size={60} />
-              <View style={styles.coba}>
-                <Text style={styles.text}>Rangkap Data</Text>
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => navigation.navigate('RangkapData')}>
+              <View style={styles.inner}>
+                {/* <Image style={styles.logo} source={scan} /> */}
+                <FontAwesomeIcon icon={faList} color={'white'} size={60} />
+                <View style={styles.coba}>
+                  <Text style={styles.text}>Rangkap Data</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.box}
-            onPress={() => navigation.navigate('Panduan')}>
-            <View style={styles.inner}>
-              {/* <Image style={styles.logo} source={scan} /> */}
-              <FontAwesomeIcon icon={faQuestion} color={'white'} size={60} />
-              <View style={styles.coba}>
-                <Text style={styles.text}>Panduan</Text>
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => navigation.navigate('Panduan')}>
+              <View style={styles.inner}>
+                {/* <Image style={styles.logo} source={scan} /> */}
+                <FontAwesomeIcon icon={faQuestion} color={'white'} size={60} />
+                <View style={styles.coba}>
+                  <Text style={styles.text}>Bantuan</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.box}
-            onPress={() => navigation.navigate('Saya')}>
-            <View style={styles.inner}>
-              {/* <Image style={styles.logo} source={scan} /> */}
-              <FontAwesomeIcon icon={faUser} color={'white'} size={60} />
-              <View style={styles.coba}>
-                <Text style={styles.text}>Tentang Saya</Text>
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => navigation.navigate('Saya')}>
+              <View style={styles.inner}>
+                {/* <Image style={styles.logo} source={scan} /> */}
+                <FontAwesomeIcon icon={faUser} color={'white'} size={60} />
+                <View style={styles.coba}>
+                  <Text style={styles.text}>Tentang</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.box}
-            onPress={() => {logout()}}>
-            <View style={styles.inner}>
-              {/* <Image style={styles.logo} source={scan} /> */}
-              <FontAwesomeIcon icon={faSignOut} color={'white'} size={60} />
-              <View style={styles.coba}>
-                <Text style={styles.text}>Logout</Text>
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => {
+                logout();
+              }}>
+              <View style={styles.inner}>
+                {/* <Image style={styles.logo} source={scan} /> */}
+                <FontAwesomeIcon icon={faSignOut} color={'white'} size={60} />
+                <View style={styles.coba}>
+                  <Text style={styles.text}>Logout</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.box}
-            onPress={() => exit()}>
-            <View style={styles.inner}>
-              <FontAwesomeIcon icon={faPowerOff} color={'white'} size={60} />
-              <View style={styles.coba}>
-                <Text style={styles.text}>Keluar</Text>
+            <TouchableOpacity style={styles.box} onPress={() => exit()}>
+              <View style={styles.inner}>
+                <FontAwesomeIcon icon={faPowerOff} color={'white'} size={60} />
+                <View style={styles.coba}>
+                  <Text style={styles.text}>Keluar</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </>
     </SafeAreaView>
 
     // <View style={Styles.page}>

@@ -11,7 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import { storeData } from '../../utils/localStorage';
+import {storeData} from '../../utils/localStorage';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -24,8 +24,8 @@ const Login = ({navigation}) => {
     } else {
       auth()
         .signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          storeData('user', {email: userCredential.user.email})
+        .then(userCredential => {
+          storeData('user', {email: userCredential.user.email});
           navigation.replace('Home', {email: email});
         })
         .catch(err => {
@@ -65,7 +65,7 @@ const Login = ({navigation}) => {
                 setEmail(text);
               }}
               // onChangeText={email => setEmail(email)}
-              placeholder="adibku@gmail.com"
+              // placeholder="adibku@gmail.com"
             />
           </View>
 
@@ -82,7 +82,7 @@ const Login = ({navigation}) => {
                 setPassword(text);
               }}
               // onChangeText={password => setPassword(password)}
-              placeholder="256590"
+              // placeholder="256590"
             />
           </View>
 

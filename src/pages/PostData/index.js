@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -24,7 +24,7 @@ function makeid(length) {
   return result;
 }
 
-export default function PostData({ navigation }) {
+export default function PostData({navigation}) {
   const [namaBarang, setNamaBarang] = useState('');
   const [jumlahBarang, setJumlahBarang] = useState('');
   const [lokasi, setLokasi] = useState('');
@@ -34,8 +34,26 @@ export default function PostData({ navigation }) {
 
   const satuan1 = ['Dos', 'Buah', 'Set', 'Unit'];
   const kondisi1 = ['Baik', 'Buruk'];
-  const ruangan = ['kelas 10 ipa', 'kelas 10 ips', 'kelas 10 agama', 'kelas 11 ipa', 'kelas 11 ips', 'kelas 11 agama', 'kelas 12 ipa', 'kelas 12 ips', 'kelas 12 agama',]
+  const ruangan = [
+    'kelas 10 ipa',
+    'kelas 10 ips',
+    'kelas 10 agama',
+    'kelas 11 ipa',
+    'kelas 11 ips',
+    'kelas 11 agama',
+    'kelas 12 ipa',
+    'kelas 12 ips',
+    'kelas 12 agama',
+    'ruang guru',
+    'ruang bk',
+    'ruang tu',
+    'uks',
+    'lab komputer',
+    'perpustakaan',
+    'gudang',
+  ];
 
+  // Waktu
   useEffect(() => {
     var date = new Date().getDate();
     var month = new Date().getMonth();
@@ -72,7 +90,7 @@ export default function PostData({ navigation }) {
           Alert.alert('Sukses', 'Data Berhasil Ditambahkan');
           navigation.reset({
             index: 0,
-            routes: [{ name: 'Home' }]
+            routes: [{name: 'Home'}],
           });
         })
         .catch(err => {
@@ -85,8 +103,8 @@ export default function PostData({ navigation }) {
     <>
       <View style={styles.pages}>
         <View style={styles.header}>
-          <Text style={{ fontSize: 30, marginBottom: 30, color: 'black' }}>
-            Post Data
+          <Text style={{fontSize: 30, marginBottom: 30, color: 'black'}}>
+            Tambah Data
           </Text>
         </View>
 

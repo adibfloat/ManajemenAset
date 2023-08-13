@@ -12,8 +12,7 @@ import database from '@react-native-firebase/database';
 import SelectDropdown from 'react-native-select-dropdown';
 
 export default function PostData({navigation, route}) {
-  const {id, namaBarang, jumlahBarang, kondisi, lokasi, satuan} =
-    route.params;
+  const {id, namaBarang, jumlahBarang, kondisi, lokasi, satuan} = route.params;
   // const result = (...value, route.params);
   console.log(id);
   const [namaBarang1, setNamaBarang1] = useState(namaBarang);
@@ -23,9 +22,26 @@ export default function PostData({navigation, route}) {
   const [satuan1, setSatuan1] = useState(satuan);
   const [waktu, setWaktu] = useState('');
   // const kondisi2 = [kondisi];
-  const kondisi2 = ['Baik', 'Buruk'];
+  const kondisi2 = ['Baik', 'Rusak Ringan', 'Rusak'];
   const satuan2 = ['Dos', 'Buah', 'Set', 'Unit'];
-  const ruangan = ['kelas 10 ipa', 'kelas 10 ips', 'kelas 10 agama', 'kelas 11 ipa', 'kelas 11 ips', 'kelas 11 agama', 'kelas 12 ipa', 'kelas 12 ips', 'kelas 12 agama',]
+  const ruangan = [
+    'kelas 10 ipa',
+    'kelas 10 ips',
+    'kelas 10 agama',
+    'kelas 11 ipa',
+    'kelas 11 ips',
+    'kelas 11 agama',
+    'kelas 12 ipa',
+    'kelas 12 ips',
+    'kelas 12 agama',
+    'ruang guru',
+    'ruang bk',
+    'ruang tu',
+    'uks',
+    'lab komputer',
+    'perpustakaan',
+    'gudang',
+  ];
 
   useEffect(() => {
     var date = new Date().getDate();
@@ -58,7 +74,7 @@ export default function PostData({navigation, route}) {
           Alert.alert('Sukses', 'Data Berhasil Diubah');
           navigation.reset({
             index: 0,
-            routes: [{ name: 'ReadData' }]
+            routes: [{name: 'ReadData'}],
           });
         })
         .catch(err => {
@@ -72,7 +88,7 @@ export default function PostData({navigation, route}) {
       <View style={styles.pages}>
         <View style={styles.header}>
           <Text style={{fontSize: 30, marginBottom: 30, color: 'black'}}>
-            Edit Data
+            Update Data
           </Text>
         </View>
 

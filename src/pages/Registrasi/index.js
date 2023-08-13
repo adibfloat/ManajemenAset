@@ -63,7 +63,7 @@ const Registrasi = ({navigation}) => {
                 setEmail(text);
               }}
               // onChangeText={email => setEmail(email)}
-              placeholder="adibku@gmail.com"
+              // placeholder="adibku@gmail.com"
             />
           </View>
 
@@ -80,7 +80,7 @@ const Registrasi = ({navigation}) => {
                 setPassword(text);
               }}
               // onChangeText={password => setPassword(password)}
-              placeholder="256590"
+              // placeholder="256590"
             />
           </View>
 

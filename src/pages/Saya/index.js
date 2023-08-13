@@ -20,10 +20,12 @@ const Saya = ({navigation}) => {
         <View style={styles.garis} />
       </View>
       <View style={styles.pages}>
-        <Text>Tentang Saya</Text>
+        <Text>Nama: Adib Niatno</Text>
+        <Text>Email: adibniatno08@gmail.com</Text>
+        <Text>Tentang Saya: Hanya manusia biasa.</Text>
       </View>
-      <View style={styles.pages}>
-        <Text>Nama Barang:</Text>
+      <View style={styles.pages2}>
+        <Text>Version: 1.5.2</Text>
       </View>
     </View>
   );
@@ -40,6 +42,21 @@ const styles = StyleSheet.create({
   pages: {
     padding: 20,
     margin: 30,
+    marginBottom: 0,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  pages2: {
+    padding: 20,
+    margin: 30,
+    marginTop: 15,
     marginBottom: 0,
     backgroundColor: 'white',
     shadowColor: '#000',
