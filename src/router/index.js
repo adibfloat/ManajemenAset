@@ -16,6 +16,8 @@ import {
   RangkapData,
   DetailRangkapData,
   DetailScan,
+  DataPeminjaman,
+  FormPeminjaman,
 } from '../pages';
 
 const Stack = createNativeStackNavigator();
@@ -93,6 +95,16 @@ const router = () => {
       <Stack.Screen
         name="DetailScan"
         component={DetailScan}
+        options={{headerShown: false}} //Buat munculin header
+      />
+      <Stack.Screen
+        name="DataPeminjaman"
+        component={DataPeminjaman}
+        options={{headerShown: false}} //Buat munculin header
+      />
+      <Stack.Screen
+        name="FormPeminjaman"
+        component={FormPeminjaman}
         options={{headerShown: false}} //Buat munculin header
       />
     </Stack.Navigator>

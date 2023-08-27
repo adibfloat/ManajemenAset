@@ -12,6 +12,8 @@ import Saya from './Saya';
 import RangkapData from './RangkapData';
 import DetailRangkapData from './DetailRangkapData';
 import DetailScan from './DetailScan';
+import DataPeminjaman from './DataPeminjaman';
+import FormPeminjaman from './FormPeminjaman';
 
 export {
   Home,
@@ -27,5 +29,7 @@ export {
   Saya,
   RangkapData,
   DetailRangkapData,
-  DetailScan
+  DetailScan,
+  DataPeminjaman,
+  FormPeminjaman
 };

@@ -23,6 +23,8 @@ import {
   faSignOut,
   faList,
   faPowerOff,
+  faClipboardList,
+  faSquarePen
 } from '@fortawesome/free-solid-svg-icons';
 import {clearStorage} from '../../utils/localStorage';
 
@@ -137,6 +139,30 @@ const Home = ({navigation, route}) => {
                 <FontAwesomeIcon icon={faList} color={'white'} size={60} />
                 <View style={styles.coba}>
                   <Text style={styles.text}>Rangkap Data</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => navigation.navigate('FormPeminjaman')}>
+              <View style={styles.inner}>
+                {/* <Image style={styles.logo} source={scan} /> */}
+                <FontAwesomeIcon icon={faSquarePen} color={'white'} size={60} />
+                <View style={styles.coba}>
+                  <Text style={styles.text}>Form Peminjaman</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => navigation.navigate('DataPeminjaman')}>
+              <View style={styles.inner}>
+                {/* <Image style={styles.logo} source={scan} /> */}
+                <FontAwesomeIcon icon={faClipboardList} color={'white'} size={60} />
+                <View style={styles.coba}>
+                  <Text style={styles.text}>Data Peminjaman</Text>
                 </View>
               </View>
             </TouchableOpacity>

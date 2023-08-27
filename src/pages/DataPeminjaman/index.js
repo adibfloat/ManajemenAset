@@ -1,25 +1,61 @@
-import React, {useState, useEffect} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {
-  View,
   Text,
+  View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  PermissionsAndroid,
   Alert,
+  PermissionsAndroid
 } from 'react-native';
 import database from '@react-native-firebase/database';
+import {DataKosong} from '../../components';
 import {faEdit, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {DataKosong} from '../../components';
 import XLSX from 'xlsx';
 var RNFS = require('react-native-fs');
 
-const DetailRangkapData = ({navigation, route}) => {
-  const {name} = route.params;
-
+const DataPeminjaman = ({navigation}) => {
   const [data, setData] = useState(null);
   const [triger, setTriger] = useState(false);
+
+  useEffect(() => {
+    database()
+      .ref('pinjaman')
+      .once('value', dataSnapshot => {
+        setData(dataSnapshot.val());
+      });
+  }, []);
+
+  useEffect(() => {
+    database()
+      .ref('pinjaman')
+      .once('value', dataSnapshot => {
+        setData(dataSnapshot.val());
+      });
+  }, [triger]);
+
+  const onUpdatePengembalian = id => {
+    var date = new Date().getDate();
+    var month = new Date().getMonth();
+    var year = new Date().getFullYear();
+    var hours = new Date().getHours();
+    var min = new Date().getMinutes();
+    var sec = new Date().getSeconds();
+    let waktu =
+      date + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + sec;
+
+    database()
+      .ref(`/pinjaman/${id}`)
+      .update({
+        tanggalpengembalian: waktu,
+        status: 'Sudah Dikembalikan',
+      })
+      .then(() => {
+        Alert.alert('Berhasil', 'Barang sudah dikembalikan ...');
+        setTriger(!triger);
+      });
+  };
 
   const exportDataToExcel = () => {
     // Created Sample data
@@ -27,11 +63,14 @@ const DetailRangkapData = ({navigation, route}) => {
 
     Object.keys(data).map(value => {
       sample_data_to_export.push({
+        'Nama Peminjam': data[value].namaPeminjam,
         'Nama Barang': data[value].namaBarang,
         'Jumlah Barang': data[value].jumlahBarang,
-        Satuan: data[value].satuan,
-        Lokasi: data[value].lokasi,
-        Waktu: data[value].waktu,
+        "Lokasi": data[value].lokasi,
+        'Tanggal Pinjam': data[value].tanggalPinjam,
+        'Tanggal Kembali': data[value].tanggalKembali,
+        'Status': data[value].status,
+        'Tanggal Pengembalian': data[value].tanggalpengembalian,
       });
     });
 
@@ -39,8 +78,7 @@ const DetailRangkapData = ({navigation, route}) => {
     let ws = XLSX.utils.json_to_sheet(sample_data_to_export);
     XLSX.utils.book_append_sheet(wb, ws, 'Users');
     const wbout = XLSX.write(wb, {type: 'binary', bookType: 'xlsx'});
-    const newName = name.replace(/ /g, '_');
-    const fileName = `${newName}.${Date.now()}`;
+    const fileName = `Rekap Data Peminjaman.${Date.now()}`;
 
     // Write generated excel to Storage
     RNFS.writeFile(
@@ -101,28 +139,6 @@ const DetailRangkapData = ({navigation, route}) => {
     }
   };
 
-  useEffect(() => {
-    database()
-      .ref('aset')
-      .orderByChild('lokasi')
-      .startAt(name.toLowerCase())
-      .endAt(name.toLowerCase())
-      .once('value', dataSnapshot => {
-        setData(dataSnapshot.val());
-      });
-  }, []);
-
-  useEffect(() => {
-    database()
-      .ref('aset')
-      .orderByChild('lokasi')
-      .startAt(name.toLowerCase())
-      .endAt(name.toLowerCase())
-      .once('value', dataSnapshot => {
-        setData(dataSnapshot.val());
-      });
-  }, [triger]);
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -143,31 +159,57 @@ const DetailRangkapData = ({navigation, route}) => {
           <DataKosong />
         ) : (
           Object.keys(data).map((value, index) => {
-            // console.log(value);
-            // console.log(index);
             return (
-              <View key={index}>
-                <View style={styles.container2}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      /* Menuju Detail Data */
-                      navigation.navigate('DetailData', {
-                        id: value,
-                        datas: data[value],
-                      });
-                    }}>
-                    <View>
-                      <Text style={styles.nama}>{data[value].namaBarang}</Text>
-                      <Text style={styles.jumlahBarang}>
-                        {data[value].jumlahBarang}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-
-                  <View style={styles.icon}>
+              <View key={index} style={styles.container2}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}>
+                  <View>
+                    <Text style={styles.textHead}>Nama Peminjam: </Text>
+                    <Text>{data[value].namaPeminjam} </Text>
+                    <Text style={styles.textHead}>Nama Barang: </Text>
+                    <Text>{data[value].namaBarang} </Text>
+                    <Text style={styles.textHead}>Jumlah Barang: </Text>
+                    <Text>{data[value].jumlahBarang} </Text>
+                    <Text style={styles.textHead}>Lokasi Awal: </Text>
+                    <Text>{data[value].lokasi} </Text>
+                  </View>
+                  <View>
+                    <Text style={styles.textHead}>Tanggal Pinjam: </Text>
+                    <Text>{data[value].tanggalPinjam} </Text>
+                    <Text style={styles.textHead}>Tanggal Kembali: </Text>
+                    <Text>{data[value].tanggalKembali} </Text>
+                    <Text style={styles.textHead}>Status: </Text>
+                    <Text>{data[value].status} </Text>
+                    <Text style={styles.textHead}>Tanggal Pengembalian: </Text>
+                    <Text>
+                      {data[value].tanggalpengembalian == 'null'
+                        ? '-'
+                        : data[value].tanggalpengembalian}{' '}
+                    </Text>
+                  </View>
+                </View>
+                <View style={{height: 40}} />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}>
+                  {data[value].tanggalpengembalian == 'null' && (
                     <TouchableOpacity
-                      // onPress={() => navigation.props('EditData', value)}
-                      // onPress={() => coba(value)}
+                      style={styles.tombol}
+                      onPress={() => {
+                        onUpdatePengembalian(data[value].id);
+                      }}>
+                      <Text style={styles.textTombol}>Sudah Selesai</Text>
+                    </TouchableOpacity>
+                  )}
+                  <View style={styles.icon}>
+                    {/* <TouchableOpacity
                       onPress={() =>
                         navigation.navigate('EditData', {
                           ...data[value],
@@ -180,11 +222,12 @@ const DetailRangkapData = ({navigation, route}) => {
                         color={'blue'}
                         size={25}
                       />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={async () => {
-                      await database().ref(`/aset/${value}`).remove();
-                      setTriger(!triger)
-                    }}>
+                    </TouchableOpacity> */}
+                    <TouchableOpacity
+                      onPress={async () => {
+                        await database().ref(`/pinjaman/${value}`).remove();
+                        setTriger(!triger);
+                      }}>
                       <FontAwesomeIcon icon={faTimes} color={'red'} size={25} />
                     </TouchableOpacity>
                   </View>
@@ -199,37 +242,7 @@ const DetailRangkapData = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  tombol: {
-    backgroundColor: '#075eec',
-    justifyContent: 'center',
-    borderRadius: 30,
-    marginTop: 10,
-    marginBottom: 10,
-    height: 40,
-    width: 100,
-  },
-  textTombol: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontSize: 16,
-  },
-  garis: {
-    borderWidth: 2,
-    marginTop: 10,
-    marginHorizontal: 30,
-  },
-  header: {
-    paddingHorizontal: 30,
-    paddingTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   container2: {
-    flexDirection: 'row',
     margin: 20,
     padding: 15,
     backgroundColor: 'white',
@@ -244,13 +257,40 @@ const styles = StyleSheet.create({
     shadowRadius: 3.8,
     elevation: 5,
   },
-  nama: {
+  container: {
+    flex: 1,
+  },
+  tombol: {
+    backgroundColor: '#075eec',
+    justifyContent: 'center',
+    borderRadius: 30,
+    marginTop: 10,
+    marginBottom: 10,
+    height: 40,
+    width: 120,
+  },
+  textTombol: {
+    color: 'white',
     fontWeight: 'bold',
+    textAlign: 'center',
     fontSize: 16,
   },
-  jumlahBarang: {
-    fontSize: 12,
-    color: 'grey',
+  garis: {
+    borderWidth: 2,
+    marginTop: 5,
+  },
+  header: {
+    paddingHorizontal: 30,
+    paddingTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  scroll: {
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+  },
+  textHead: {
+    fontWeight: '900',
   },
   icon: {
     flexDirection: 'row',
@@ -260,4 +300,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DetailRangkapData;
+export default DataPeminjaman;

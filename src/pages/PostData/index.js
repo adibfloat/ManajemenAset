@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   },
 });
 
-{
+
   /* <View style={styles.container}>
         <View style={styles.header}>
           <Text>Post Data</Text>
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
           <Button title={button} onPress={submit} />
         </View>
       </View> */
-}
+
 
 // const styles = StyleSheet.create({
 //   container: {
