@@ -205,14 +205,14 @@ const Home = ({navigation, route}) => {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.box} onPress={() => exit()}>
+            {/* <TouchableOpacity style={styles.box} onPress={() => exit()}>
               <View style={styles.inner}>
                 <FontAwesomeIcon icon={faPowerOff} color={'white'} size={60} />
                 <View style={styles.coba}>
                   <Text style={styles.text}>Keluar</Text>
                 </View>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </ScrollView>
       </>

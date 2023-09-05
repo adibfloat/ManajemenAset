@@ -11,26 +11,62 @@ import {
   Alert,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import {storeData} from '../../utils/localStorage';
 
 const Registrasi = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
+  const [messageErrorPassword, setMessageErrorPassword] = useState(null);
+  const [messageErrorEmail, setMessageErrorEmail] = useState(null);
 
   //Registrasi
   const OnRegisterPress = () => {
+    setMessageErrorEmail(null);
+    setMessageErrorPassword(null);
     if (email == '' || password == '') {
       Alert.alert('Error', 'Form tidak boleh kosong');
     } else {
       auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          Alert.alert('Berhasil', 'Buat akun berhasil');
+        .then((userCredential) => {
+          setMessageErrorPassword(null);
+          Alert.alert('Berhasil', 'Buat akun berhasil', [
+            {
+              text: 'Ok',
+              onPress: () => {
+                storeData('user', {email: userCredential.user.email});
+                navigation.replace('Home')
+              },
+            }
+          ]);
         })
         .catch(err => {
-          Alert.alert('Error', err.message);
+          setError(true);
+          if (
+            err.message ==
+            '[auth/weak-password] The given password is invalid. [ Password should be at least 6 characters ]'
+          ) {
+            setMessageErrorPassword('Password harus 6 karakter atau lebih');
+          }
+          if (
+            err.message ==
+            '[auth/invalid-email] The email address is badly formatted.'
+          ) {
+            setMessageErrorEmail('Format email salah');
+          }
+
+          if (
+            err.message ==
+            '[auth/email-already-in-use] The email address is already in use by another account.'
+          ) {
+            setMessageErrorEmail('Email sudah ada');
+          }
+          // console.log(err.message);
         });
     }
   };
+  // console.log(messageErrorEmail);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#e8ecf4'}}>
@@ -57,7 +93,10 @@ const Registrasi = ({navigation}) => {
               autoCorrect={false}
               keyboardType="email-address"
               placeholderTextColor="#6b7280"
-              style={styles.inputControl}
+              style={[
+                styles.inputControl,
+                {borderColor: error ? 'red' : 'black'},
+              ]}
               value={email}
               onChangeText={text => {
                 setEmail(text);
@@ -65,6 +104,11 @@ const Registrasi = ({navigation}) => {
               // onChangeText={email => setEmail(email)}
               // placeholder="adibku@gmail.com"
             />
+            {messageErrorEmail ? (
+              <Text style={styles.textError}>{messageErrorEmail}</Text>
+            ) : (
+              ''
+            )}
           </View>
 
           <View style={styles.input}>
@@ -73,7 +117,10 @@ const Registrasi = ({navigation}) => {
             <TextInput
               autoCorrect={false}
               placeholderTextColor="#6b7280"
-              style={styles.inputControl}
+              style={[
+                styles.inputControl,
+                {borderColor: error ? 'red' : 'black'},
+              ]}
               secureTextEntry={true}
               value={password}
               onChangeText={text => {
@@ -82,6 +129,11 @@ const Registrasi = ({navigation}) => {
               // onChangeText={password => setPassword(password)}
               // placeholder="256590"
             />
+            {messageErrorPassword ? (
+              <Text style={styles.textError}>{messageErrorPassword}</Text>
+            ) : (
+              ''
+            )}
           </View>
 
           <View style={styles.formAction}>
@@ -174,6 +226,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '500',
     color: '#222',
+    borderWidth: 0.5,
   },
   btn: {
     flexDirection: 'row',
@@ -191,5 +244,8 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     fontWeight: '600',
     color: '#fff',
+  },
+  textError: {
+    color: 'red',
   },
 });
